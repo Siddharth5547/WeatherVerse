@@ -3,6 +3,10 @@ import { useState } from "react";
 function SearchBar() {
   const [city, setCity] = useState("");
 
+  function handleSearch() {
+  console.log(city);
+}
+
   return (
     <div>
       <input
@@ -11,8 +15,7 @@ function SearchBar() {
         value={city}
         onChange={(event) => setCity(event.target.value)}
       />
-
-      <button>Search</button>
+       <button onClick={handleSearch}> Get Weather  </button>
     </div>
   );
 }
