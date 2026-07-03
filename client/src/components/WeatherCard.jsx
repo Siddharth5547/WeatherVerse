@@ -1,15 +1,15 @@
-function WeatherCard() {
+function WeatherCard(props) {
   return (
     <div>
-      <h2>📍 Delhi</h2>
+      <h2>📍 {props.city}</h2>
 
-      <p>🌡️ Temperature : 32°C</p>
+      <p>🌡️ Temperature : {props.temperature}°C</p>
 
-      <p>☁️ Condition : Clear Sky</p>
+      <p>☁️ Condition : {props.condition}</p>
 
-      <p>💧 Humidity : 65%</p>
+      <p>💧 Humidity : {props.humidity}%</p>
 
-      <p>💨 Wind : 12 km/h</p>
+      <p>💨 Wind : {props.wind} km/h</p>
     </div>
   );
 }

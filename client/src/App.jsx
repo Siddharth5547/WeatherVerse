@@ -8,7 +8,13 @@ function App() {
     <div>
       <Header />
       <SearchBar />
-      <WeatherCard />
+         <WeatherCard
+          city="Delhi"
+          temperature={32}
+          condition="Clear Sky"
+          humidity={65}
+          wind={12}
+          />
     </div>
   );
 }
