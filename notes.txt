@@ -1,0 +1,11 @@
+React.js,Tailwind CSS,React Router DOM,OpenWeatherMap API,HTML5cd 
+User type ya voice me pooche:
+
+"Will it rain tomorrow?"
+"Can I go for a bike ride?"
+"Should I carry an umbrella?"
+"Is tomorrow good for cricket?"
+
+AI weather data ko analyze karke natural language me answer de.
+
+AI FutureMe Advisor

@@ -2,58 +2,86 @@ const axios = require("axios");
 
 const getWeather = async (req, res) => {
   try {
-    const city = req.query.city;
+    const { city, lat, lon } = req.query;
 
-    if (!city) {
+    if (!city && (!lat || !lon)) {
       return res.status(400).json({
-        message: "City is required",
+        message: "City or Location is required",
       });
     }
 
-    const apiKey = process.env.OPENWEATHER_API_KEY;
+    const apiKey = process.env.WEATHER_API_KEY;
 
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+    let url;
+
+    if (lat && lon) {
+      url = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${lat},${lon}&days=5&aqi=yes&alerts=no`;
+    } else {
+      url = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${city}&days=5&aqi=yes&alerts=no`;
+    }
 
     const response = await axios.get(url);
 
     const data = response.data;
 
+    // Hourly Forecast
+    const hourly = data.forecast.forecastday[0].hour.map((item) => ({
+      time: new Date(item.time).toLocaleTimeString("en-IN", {
+        hour: "numeric",
+      }),
+      temp: Math.round(item.temp_c),
+      icon: "https:" + item.condition.icon,
+    }));
+
+    // Daily Forecast
+    const daily = data.forecast.forecastday.map((item) => ({
+      day: new Date(item.date).toLocaleDateString("en-IN", {
+        weekday: "short",
+      }),
+      temp: Math.round(item.day.avgtemp_c),
+      icon: "https:" + item.day.condition.icon,
+      condition: item.day.condition.text,
+    }));
+
     res.json({
-      city: data.name,
-      temperature: Math.round(data.main.temp),
-      feelsLike: Math.round(data.main.feels_like),
-      condition: data.weather[0].main,
-      description: data.weather[0].description,
-      humidity: data.main.humidity,
-      pressure: data.main.pressure,
-      visibility: data.visibility / 1000,
-      wind: Math.round(data.wind.speed),
+      city: data.location.name,
 
-      sunrise: new Date(data.sys.sunrise * 1000).toLocaleTimeString(
-        "en-IN",
-        {
-          hour: "2-digit",
-          minute: "2-digit",
-        }
-      ),
+      temperature: Math.round(data.current.temp_c),
 
-      sunset: new Date(data.sys.sunset * 1000).toLocaleTimeString(
-        "en-IN",
-        {
-          hour: "2-digit",
-          minute: "2-digit",
-        }
-      ),
+      feelsLike: Math.round(data.current.feelslike_c),
 
-      icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png`,
+      condition: data.current.condition.text,
+
+      description: data.current.condition.text,
+
+      humidity: data.current.humidity,
+
+      pressure: data.current.pressure_mb,
+
+      visibility: data.current.vis_km,
+
+      wind: Math.round(data.current.wind_kph),
+
+      sunrise: data.forecast.forecastday[0].astro.sunrise,
+
+      sunset: data.forecast.forecastday[0].astro.sunset,
+
+      icon: "https:" + data.current.condition.icon,
+
+      hourly,
+
+      daily,
     });
+
   } catch (error) {
     console.log(error.response?.data || error.message);
 
     res.status(500).json({
-      message: error.response?.data?.message || error.message,
+      message: error.response?.data?.error?.message || error.message,
     });
   }
 };
 
-module.exports = { getWeather };
+module.exports = {
+  getWeather,
+};
