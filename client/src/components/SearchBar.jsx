@@ -10,29 +10,11 @@ function SearchBar({
 
   const recognitionRef = useRef(null);
 
-  async function handleSearch(city) {
-  try {
-    setLoading(true);
-    setError("");
+  function handleSearch() {
+    if (!city.trim()) return;
 
-    console.log("Searching:", city);
-
-    const data = await fetchWeather(city);
-
-    console.log("Success:", data);
-
-    setWeather(data);
-  } catch (err) {
-    console.log("ERROR:", err);
-    console.log("RESPONSE:", err.response);
-    console.log("DATA:", err.response?.data);
-
-    setWeather(null);
-    setError(err.response?.data?.message || err.message);
-  } finally {
-    setLoading(false);
+    onSearch(city.trim());
   }
-}
 
   function handleKeyDown(e) {
     if (e.key === "Enter") {
@@ -60,71 +42,70 @@ function SearchBar({
   }
 
   function startVoiceSearch() {
-  const SpeechRecognition =
-    window.SpeechRecognition ||
-    window.webkitSpeechRecognition;
+    const SpeechRecognition =
+      window.SpeechRecognition ||
+      window.webkitSpeechRecognition;
 
-  if (!SpeechRecognition) {
-    alert("Voice Search is not supported in this browser.");
-    return;
-  }
-
-  // Agar pehle se recognition chal raha hai to usse stop karo
-  if (recognitionRef.current) {
-    recognitionRef.current.stop();
-    recognitionRef.current = null;
-  }
-
-  const recognition = new SpeechRecognition();
-
-  recognition.lang = "en-IN";
-  recognition.continuous = false;
-  recognition.interimResults = false;
-  recognition.maxAlternatives = 1;
-
-  recognitionRef.current = recognition;
-
-  recognition.onstart = () => {
-    setListening(true);
-  };
-
-  recognition.onresult = (event) => {
-  const transcript = event.results[0][0].transcript.trim();
-
-  console.log("Voice:", transcript);
-
-  setCity(transcript);
-
-  setTimeout(() => {
-    onSearch(transcript);
-  }, 100);
-  };
-
-  recognition.onerror = (event) => {
-    console.log("Voice Error:", event.error);
-
-    if (event.error === "not-allowed") {
-      alert("Please allow microphone permission.");
-    } else if (event.error === "no-speech") {
-      alert("No speech detected. Please try again.");
+    if (!SpeechRecognition) {
+      alert("Voice Search is not supported in this browser.");
+      return;
     }
 
-    setListening(false);
-    recognitionRef.current = null;
-  };
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      recognitionRef.current = null;
+    }
 
-  recognition.onend = () => {
-    setListening(false);
-    recognitionRef.current = null;
-  };
+    const recognition = new SpeechRecognition();
 
-  recognition.start();
-}
+    recognition.lang = "en-IN";
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognitionRef.current = recognition;
+
+    recognition.onstart = () => {
+      setListening(true);
+    };
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript.trim();
+
+      setCity(transcript);
+
+      setTimeout(() => {
+        onSearch(transcript);
+      }, 100);
+    };
+
+    recognition.onerror = (event) => {
+      console.log(event.error);
+
+      if (event.error === "not-allowed") {
+        alert("Please allow microphone permission.");
+      }
+
+      if (event.error === "no-speech") {
+        alert("No speech detected.");
+      }
+
+      setListening(false);
+      recognitionRef.current = null;
+    };
+
+    recognition.onend = () => {
+      setListening(false);
+      recognitionRef.current = null;
+    };
+
+    recognition.start();
+  }
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
 
-      <div className="flex gap-3">
+      <div className="flex flex-col sm:flex-row gap-3">
 
         <input
           type="text"
@@ -132,7 +113,7 @@ function SearchBar({
           value={city}
           onChange={(e) => setCity(e.target.value)}
           onKeyDown={handleKeyDown}
-          className={`flex-1 rounded-2xl px-5 py-3 outline-none border backdrop-blur-lg transition-all duration-300
+          className={`w-full flex-1 rounded-2xl px-5 py-3 outline-none border backdrop-blur-lg transition-all duration-300
           ${
             theme === "dark"
               ? "bg-white/10 border-white/20 text-white placeholder:text-gray-300"
@@ -142,7 +123,7 @@ function SearchBar({
 
         <button
           onClick={handleSearch}
-          className="rounded-2xl bg-cyan-500 px-6 text-white font-semibold hover:bg-cyan-600 transition"
+          className="w-full sm:w-auto rounded-2xl bg-cyan-500 px-6 py-3 text-white font-semibold hover:bg-cyan-600 transition"
         >
           Search
         </button>
@@ -150,7 +131,8 @@ function SearchBar({
         <button
           onClick={startVoiceSearch}
           disabled={listening}
-          className={`rounded-2xl px-4 text-xl border transition-all duration-300
+          title="Voice Search"
+          className={`w-full sm:w-auto rounded-2xl px-4 py-3 text-xl border transition-all duration-300
           ${
             listening
               ? "bg-red-500 text-white animate-pulse cursor-not-allowed"
@@ -158,7 +140,6 @@ function SearchBar({
               ? "bg-white/10 border-white/20 text-white hover:bg-white/20"
               : "bg-white border-slate-300 text-slate-900 hover:bg-slate-100 shadow-md"
           }`}
-          title="Voice Search"
         >
           {listening ? "🎙️" : "🎤"}
         </button>
