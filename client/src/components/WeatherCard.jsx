@@ -90,9 +90,12 @@ function WeatherCard({
       initial={{ opacity: 0, y: 40, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.6 }}
-      className={`relative mt-6 w-full max-w-md sm:max-w-xl mx-auto overflow-hidden rounded-[24px] sm:rounded-[32px]
-       backdrop-blur-2xl border shadow-[0_15px_40px_rgba(0,0,0,.35)]
-       transition-all duration-500 ${cardClass}`}
+      className={`relative mt-6 w-full max-w-md sm:max-w-lg lg:max-w-xl mx-auto
+overflow-hidden rounded-[24px] sm:rounded-[32px]
+backdrop-blur-2xl border
+shadow-[0_15px_40px_rgba(0,0,0,.35)]
+transition-all duration-500
+${cardClass}`}
     >
       <WeatherEffects condition={condition} />
 
@@ -101,13 +104,13 @@ function WeatherCard({
         <motion.img
           src={icon}
           alt=""
-          className="w-20 h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 mx-auto drop-shadow-2xl"
+          className="w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 mx-auto drop-shadow-2xl"
           animate={{ y: [0, -8, 0] }}
           transition={{ repeat: Infinity, duration: 3 }}
         />
 
         <motion.h2
-          className="text-xl sm:text-2xl lg:text-3xl font-bold mt-1 break-words"
+          className="text-2xl sm:text-3xl lg:text-4xl font-bold mt-2 break-words"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         >
@@ -125,7 +128,7 @@ function WeatherCard({
         </p>
 
         <motion.h1
-          className="text-5xl md:text-6xl lg:text-7xl font-black mt-4"
+          className="text-5xl sm:text-6xl lg:text-7xl font-black mt-4"
           animate={{ scale: [1, 1.03, 1] }}
           transition={{ repeat: Infinity, duration: 2 }}
         >

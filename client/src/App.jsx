@@ -89,18 +89,16 @@ function App() {
 
   return (
   <div
-    className={`min-h-screen w-full overflow-x-hidden
-    flex justify-center
-    items-start sm:items-center
-    px-4 sm:px-6
-    py-6 sm:py-10
-    transition-all duration-700
-    ${
-      theme === "dark"
-        ? `bg-gradient-to-br ${getBackground(weather?.condition)}`
-        : "bg-gradient-to-br from-cyan-100 via-sky-100 to-blue-200"
-    }`}
-  >
+  className={`min-h-screen w-full overflow-x-hidden transition-all duration-700
+  flex items-start sm:items-center justify-center
+  px-3 sm:px-5 lg:px-8
+  py-6 sm:py-10
+  ${
+    theme === "dark"
+      ? `bg-gradient-to-br ${getBackground(weather?.condition)}`
+      : "bg-gradient-to-br from-cyan-100 via-sky-100 to-blue-200"
+  }`}
+>
     <div className="w-full max-w-md sm:max-w-xl lg:max-w-2xl mx-auto">
 
       <Header

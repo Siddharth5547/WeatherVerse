@@ -101,7 +101,7 @@ function SearchBar({
     <div className="space-y-4 w-full">
 
       {/* Search Row */}
-      <div className="flex flex-col sm:flex-row gap-3 w-full">
+      <div className="flex flex-col sm:flex-row gap-3">
 
         <input
           type="text"
@@ -119,8 +119,8 @@ function SearchBar({
 
         <button
           onClick={handleSearch}
-          className="w-full sm:w-auto sm:min-w-[120px] rounded-2xl bg-cyan-500 px-6 py-3 font-semibold text-white hover:bg-cyan-600 transition-all"
-        >
+          className="w-full sm:w-auto rounded-2xl bg-cyan-500 px-6 py-3 text-white font-semibold hover:bg-cyan-600 transition"
+          >
           Search
         </button>
 
@@ -128,14 +128,14 @@ function SearchBar({
           onClick={startVoiceSearch}
           disabled={listening}
           title="Voice Search"
-          className={`w-full sm:w-[56px] h-[52px] rounded-2xl flex items-center justify-center border transition-all
-          ${
-            listening
-              ? "bg-red-500 text-white animate-pulse cursor-not-allowed"
-              : theme === "dark"
-              ? "bg-white/10 border-white/20 text-white hover:bg-white/20"
-              : "bg-white border-slate-300 text-slate-900 hover:bg-slate-100 shadow-md"
-          }`}
+          className={`w-full sm:w-auto rounded-2xl px-4 py-3 text-xl border transition-all duration-300
+${
+ listening
+   ? "bg-red-500 text-white animate-pulse cursor-not-allowed"
+   : theme === "dark"
+   ? "bg-white/10 border-white/20 text-white hover:bg-white/20"
+   : "bg-white border-slate-300 text-slate-900 hover:bg-slate-100 shadow-md"
+}`}
         >
           {listening ? "🎙️" : "🎤"}
         </button>
@@ -144,27 +144,20 @@ function SearchBar({
 
       {/* Listening */}
       {listening && (
-        <div
-          className={`rounded-xl py-2 text-center text-sm font-semibold animate-pulse
-          ${
-            theme === "dark"
-              ? "bg-red-500/20 text-red-300"
-              : "bg-red-100 text-red-600"
-          }`}
-        >
-          🎙 Listening...
-        </div>
+        <div className="text-center text-red-500 font-semibold animate-pulse">
+   🎙 Listening...
+</div>
       )}
 
       {/* Location */}
       <button
         onClick={handleLocation}
-        className={`w-full rounded-2xl py-3 font-semibold border transition-all
-        ${
-          theme === "dark"
-            ? "bg-white/10 border-white/20 text-white hover:bg-white/20"
-            : "bg-white border-slate-300 text-slate-900 hover:bg-slate-100 shadow-md"
-        }`}
+        className={`w-full rounded-2xl py-3 font-semibold border transition-all duration-300
+${
+ theme==="dark"
+ ? "bg-white/10 border-white/20 text-white hover:bg-white/20"
+ : "bg-white border-slate-300 text-slate-900 hover:bg-slate-100 shadow-md"
+}`}
       >
         📍 Use My Current Location
       </button>
