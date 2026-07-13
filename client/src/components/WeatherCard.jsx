@@ -90,9 +90,9 @@ function WeatherCard({
       initial={{ opacity: 0, y: 40, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.6 }}
-      className={`relative mt-6 w-full max-w-md mx-auto overflow-hidden rounded-[24px] sm:rounded-[32px]
-      backdrop-blur-2xl border shadow-[0_15px_40px_rgba(0,0,0,.35)]
-      transition-all duration-500 ${cardClass}`}
+      className={`relative mt-6 w-full max-w-md sm:max-w-xl mx-auto overflow-hidden rounded-[24px] sm:rounded-[32px]
+       backdrop-blur-2xl border shadow-[0_15px_40px_rgba(0,0,0,.35)]
+       transition-all duration-500 ${cardClass}`}
     >
       <WeatherEffects condition={condition} />
 
@@ -150,7 +150,7 @@ function WeatherCard({
           <motion.div
             key={index}
             whileHover={{ scale: 1.05 }}
-            className={`${boxClass} rounded-xl sm:rounded-2xl p-3 sm:p-4`}
+            className={`${boxClass} flex-1 rounded-2xl p-3 sm:p-4 text-center`}
           >
 
             <p className={`${secondaryText} text-sm sm:text-base`}>
@@ -213,7 +213,7 @@ function WeatherCard({
             ⏰ Today
           </h3>
 
-          <div className="flex gap-3 sm:gap-4 overflow-x-auto scrollbar-hide pb-2">
+          <div className="flex gap-3 overflow-x-auto overflow-y-hidden scrollbar-hide pb-2 w-full">
 
             {hourly.map((item, index) => (
 
@@ -280,7 +280,7 @@ function WeatherCard({
                   scale: 1.03,
                   x: 5,
                 }}
-                className={`flex items-center justify-between gap-3 rounded-2xl px-3 sm:px-4 py-3 backdrop-blur-lg border transition-all duration-300
+                className={`flex items-center justify-between gap-2 sm:gap-3 rounded-2xl px-3 sm:px-4 py-3 backdrop-blur-lg border transition-all duration-300
                 ${
                   theme === "dark"
                     ? "bg-white/10 border-white/10"
@@ -312,7 +312,7 @@ function WeatherCard({
                   {getWeatherEmoji(item.condition)}
                 </div>
 
-                <h3 className="text-xl sm:text-2xl font-bold">
+                <h3 className="text-lg sm:text-2xl font-bold">
                   {item.temp}°
                 </h3>
 
