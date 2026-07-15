@@ -5,9 +5,9 @@ import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import WeatherCard from "./components/WeatherCard";
 import AIAssistant from "./components/AIAssistant";
-import { getAIAdvice } from "./Services/AIService";
 import AQICard from "./components/AQICard";
 
+import { getAIAdvice } from "./Services/AIService";
 
 import {
   fetchWeather,
@@ -44,9 +44,13 @@ function getBackground(condition) {
 
 function App() {
   const [weather, setWeather] = useState(null);
+
   const [aiAdvice, setAIAdvice] = useState("");
+
   const [aiLoading, setAILoading] = useState(false);
+
   const [loading, setLoading] = useState(false);
+
   const [error, setError] = useState("");
 
   const [theme, setTheme] = useState(() => {
@@ -70,6 +74,7 @@ function App() {
       setAIAdvice(advice);
     } catch (err) {
       console.log(err);
+
       setAIAdvice("Unable to generate AI advice.");
     } finally {
       setAILoading(false);
@@ -79,14 +84,19 @@ function App() {
   async function handleSearch(city) {
     try {
       setLoading(true);
+
       setError("");
 
       const data = await fetchWeather(city);
 
       setWeather(data);
-      generateAI(data);
+
+      await generateAI(data);
     } catch (err) {
+      console.log(err);
+
       setWeather(null);
+
       setError("❌ City not found");
     } finally {
       setLoading(false);
@@ -96,14 +106,19 @@ function App() {
   async function handleLocationSearch(lat, lon) {
     try {
       setLoading(true);
+
       setError("");
 
       const data = await fetchWeatherByLocation(lat, lon);
-
+      console.log("WEATHER DATA:", data.aqi);
       setWeather(data);
-      generateAI(data);
+
+      await generateAI(data);
     } catch (err) {
+      console.log(err);
+
       setWeather(null);
+
       setError("❌ Unable to fetch location weather");
     } finally {
       setLoading(false);
@@ -113,6 +128,7 @@ function App() {
   return (
     <div
       className={`min-h-screen transition-all duration-700 flex justify-center items-center px-5 py-8
+
       ${
         theme === "dark"
           ? `bg-gradient-to-br ${getBackground(weather?.condition)}`
@@ -155,6 +171,8 @@ function App() {
         {!loading && weather && (
           <>
             <WeatherCard {...weather} theme={theme} />
+
+            <AQICard aqi={weather.aqi} theme={theme} />
 
             <AIAssistant
               advice={aiAdvice}
