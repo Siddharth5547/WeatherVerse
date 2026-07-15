@@ -64,7 +64,7 @@ Keep the response under 120 words.
 
     const result = await ai.models.generateContent({
 
-      model: "gemini-2.5-flash",
+      model: "gemini-3.1-flash-lite",
 
       contents: prompt,
 
