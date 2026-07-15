@@ -5,18 +5,9 @@ const ai = new GoogleGenAI({
 });
 
 const getWeatherAdvice = async (req, res) => {
-    console.log("BODY:", req.body);
-    console.log("Gemini Key Exists:", !!process.env.GEMINI_API_KEY);
-    console.log("Gemini Key:", process.env.GEMINI_API_KEY?.substring(0, 10));
   try {
-    const {
-      city,
-      temperature,
-      humidity,
-      condition,
-      wind,
-      feelsLike,
-    } = req.body;
+    const { city, temperature, humidity, condition, wind, feelsLike } =
+      req.body;
 
     if (!city || temperature === undefined || !condition) {
       return res.status(400).json({
@@ -48,21 +39,23 @@ Keep the response under 120 words.
 `;
 
     const result = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
-      contents: prompt,
-    });
+  model: "gemini-2.0-flash",
+  contents: prompt,
+});
 
-    res.json({
-      advice: result.text,
-    });
+const advice = result.text;
+
+res.json({
+  advice,
+});
   } catch (error) {
-  console.error("Gemini Error:", error);
+    console.error("Gemini Error:", error);
 
-  res.status(500).json({
-    message: error.message,
-    details: error,
-  });
-}
+    res.status(500).json({
+      message: error.message,
+      details: error,
+    });
+  }
 };
 
 module.exports = {
