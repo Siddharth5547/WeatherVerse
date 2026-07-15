@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import WeatherCard from "./components/WeatherCard";
+import AIAssistant from "./components/AIAssistant";
+import { getAIAdvice } from "./Services/AIService";
 
 import {
   fetchWeather,
@@ -40,6 +42,8 @@ function getBackground(condition) {
 
 function App() {
   const [weather, setWeather] = useState(null);
+  const [aiAdvice, setAIAdvice] = useState("");
+  const [aiLoading, setAILoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -55,6 +59,21 @@ function App() {
     setTheme((prev) => (prev === "dark" ? "light" : "dark"));
   }
 
+  async function generateAI(weatherData) {
+  try {
+    setAILoading(true);
+
+    const advice = await getAIAdvice(weatherData);
+
+    setAIAdvice(advice);
+  } catch (err) {
+    console.log(err);
+    setAIAdvice("Unable to generate AI advice.");
+  } finally {
+    setAILoading(false);
+  }
+}
+
   async function handleSearch(city) {
     try {
       setLoading(true);
@@ -63,6 +82,7 @@ function App() {
       const data = await fetchWeather(city);
 
       setWeather(data);
+      generateAI(data);
     } catch (err) {
       setWeather(null);
       setError("❌ City not found");
@@ -79,6 +99,7 @@ function App() {
       const data = await fetchWeatherByLocation(lat, lon);
 
       setWeather(data);
+      generateAI(data);
     } catch (err) {
       setWeather(null);
       setError("❌ Unable to fetch location weather");
@@ -135,11 +156,20 @@ function App() {
         )}
 
         {!loading && weather && (
-          <WeatherCard
-            {...weather}
-            theme={theme}
-          />
-        )}
+  <>
+    <WeatherCard
+      {...weather}
+      theme={theme}
+    />
+
+    <AIAssistant
+      advice={aiAdvice}
+      loading={aiLoading}
+      theme={theme}
+      onRegenerate={() => generateAI(weather)}
+    />
+  </>
+)}
 
       </div>
     </div>
