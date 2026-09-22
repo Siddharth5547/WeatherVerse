@@ -1,1 +1,102 @@
 @import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --font-apple: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Segoe UI", sans-serif;
+
+    /* Day Mode — Luxury Warm Brown / Beige / Champagne Daylight Palette */
+    --bg-canvas: #F3E9DC;
+    --bg-canvas-secondary: #E9D8C5;
+    --surface-card: #FFF9F2;
+    --surface-card-secondary: #F8EFE5;
+    --surface-nav: rgba(255, 249, 242, 0.92);
+    --border-subtle: #D8C5B3;
+    --border-elevated: #BFA994;
+    --text-primary: #2E2118;
+    --text-secondary: #5E4A3A;
+    --text-muted: #7A6655;
+
+    /* Warm Brown & Daylight Accents */
+    --accent-primary: #7A4F35;
+    --accent-primary-hover: #633E29;
+    --accent-secondary: #B9825A;
+    --accent-gold: #D9B77A;
+    --accent-sky: #8EB7C9;
+    --accent-mint: #8EAD91;
+
+    --card-shadow: 0 12px 35px rgba(74, 47, 31, 0.10);
+    --card-shadow-hover: 0 16px 45px rgba(74, 47, 31, 0.15);
+  }
+
+  /* When dark mode is active */
+  [data-theme="dark"],
+  .dark {
+    --bg-canvas: #000000;
+    --bg-canvas-secondary: #121214;
+    --surface-card: #1C1C1E;
+    --surface-card-secondary: #2C2C2E;
+    --surface-nav: rgba(28, 28, 30, 0.85);
+    --border-subtle: #38383A;
+    --border-elevated: #48484A;
+    --text-primary: #F5F5F7;
+    --text-secondary: #AEAEB2;
+    --text-muted: #8E8E93;
+
+    --accent-primary: #8E8AFF;
+    --accent-primary-hover: #7A76E6;
+    --accent-secondary: #5856D6;
+    --accent-sky: #64B5F6;
+    --accent-mint: #63E6BE;
+    --accent-gold: #FFD60A;
+    --accent-rose: #FF453A;
+
+    --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.50);
+    --card-shadow-hover: 0 14px 40px rgba(0, 0, 0, 0.70);
+  }
+
+  body {
+    font-family: var(--font-apple);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background-color: var(--bg-canvas);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: -0.015em;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: var(--font-apple);
+    letter-spacing: -0.03em;
+  }
+}
+
+/* Minimalist Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(142, 142, 147, 0.35);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(142, 142, 147, 0.6);
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

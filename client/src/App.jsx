@@ -1,187 +1,89 @@
+import React from "react";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 import "./App.css";
-import { useState, useEffect } from "react";
 
-import Header from "./components/Header";
-import SearchBar from "./components/SearchBar";
-import WeatherCard from "./components/WeatherCard";
-import AIAssistant from "./components/AIAssistant";
-import AQICard from "./components/AQICard";
+import { WeatherProvider, useWeather } from "./context/WeatherContext";
+import WeatherEnvironment from "./components/WeatherEnvironment";
+import Navbar from "./components/Navbar";
+import GlobalSearchModal from "./components/GlobalSearchModal";
+import Footer from "./components/Footer";
 
-import { getAIAdvice } from "./Services/AIService";
+// The 8 Dedicated Pages
+import HomePage from "./pages/HomePage";
+import ForecastPage from "./pages/ForecastPage";
+import AnalyticsPage from "./pages/AnalyticsPage";
+import HourlyPage from "./pages/HourlyPage";
+import AirQualityPage from "./pages/AirQualityPage";
+import AIPage from "./pages/AIPage";
+import LocationsPage from "./pages/LocationsPage";
+import AboutPage from "./pages/AboutPage";
 
-import {
-  fetchWeather,
-  fetchWeatherByLocation,
-} from "./Services/WeatherService";
+function AnimatedRoutes() {
+  const location = useLocation();
 
-function getBackground(condition) {
-  switch (condition) {
-    case "Clear":
-      return "from-cyan-400 via-sky-500 to-blue-700";
-
-    case "Clouds":
-      return "from-slate-500 via-slate-700 to-slate-900";
-
-    case "Rain":
-    case "Drizzle":
-      return "from-slate-900 via-blue-900 to-indigo-950";
-
-    case "Thunderstorm":
-      return "from-purple-950 via-slate-950 to-black";
-
-    case "Snow":
-      return "from-sky-100 via-cyan-200 to-blue-300";
-
-    case "Mist":
-    case "Fog":
-    case "Haze":
-      return "from-gray-300 via-slate-500 to-slate-800";
-
-    default:
-      return "from-slate-950 via-blue-950 to-indigo-950";
-  }
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={location.pathname}
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -8 }}
+        transition={{ duration: 0.25, ease: "easeOut" }}
+      >
+        <Routes location={location}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/forecast" element={<ForecastPage />} />
+          <Route path="/weather" element={<AnalyticsPage />} />
+          <Route path="/hourly" element={<HourlyPage />} />
+          <Route path="/air-quality" element={<AirQualityPage />} />
+          <Route path="/ai" element={<AIPage />} />
+          <Route path="/locations" element={<LocationsPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </motion.div>
+    </AnimatePresence>
+  );
 }
 
-function App() {
-  const [weather, setWeather] = useState(null);
-
-  const [aiAdvice, setAIAdvice] = useState("");
-
-  const [aiLoading, setAILoading] = useState(false);
-
-  const [loading, setLoading] = useState(false);
-
-  const [error, setError] = useState("");
-
-  const [theme, setTheme] = useState(() => {
-    return localStorage.getItem("theme") || "dark";
-  });
-
-  useEffect(() => {
-    localStorage.setItem("theme", theme);
-  }, [theme]);
-
-  function toggleTheme() {
-    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
-  }
-
-  async function generateAI(weatherData) {
-    try {
-      setAILoading(true);
-
-      const advice = await getAIAdvice(weatherData);
-
-      setAIAdvice(advice);
-    } catch (err) {
-      console.log(err);
-
-      setAIAdvice("Unable to generate AI advice.");
-    } finally {
-      setAILoading(false);
-    }
-  }
-
-  async function handleSearch(city) {
-    try {
-      setLoading(true);
-
-      setError("");
-
-      const data = await fetchWeather(city);
-
-      setWeather(data);
-
-      await generateAI(data);
-    } catch (err) {
-      console.log(err);
-
-      setWeather(null);
-
-      setError("❌ City not found");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function handleLocationSearch(lat, lon) {
-    try {
-      setLoading(true);
-
-      setError("");
-
-      const data = await fetchWeatherByLocation(lat, lon);
-    
-      setWeather(data);
-
-      await generateAI(data);
-    } catch (err) {
-      console.log(err);
-
-      setWeather(null);
-
-      setError("❌ Unable to fetch location weather");
-    } finally {
-      setLoading(false);
-    }
-  }
+function WeatherAppLayout() {
+  const { weather, theme } = useWeather();
 
   return (
     <div
-      className={`min-h-screen transition-all duration-700 flex justify-center items-center px-5 py-8
-
-      ${
-        theme === "dark"
-          ? `bg-gradient-to-br ${getBackground(weather?.condition)}`
-          : "bg-gradient-to-br from-cyan-100 via-sky-100 to-blue-200"
-      }`}
+      className="min-h-screen relative transition-colors duration-700 flex flex-col justify-between text-[var(--text-primary)]"
     >
-      <div className="w-full max-w-xl">
-        <Header
-          theme={theme}
-          darkMode={theme === "dark"}
-          toggleTheme={toggleTheme}
-        />
+      {/* Living Atmospheric Simulation */}
+      <WeatherEnvironment
+        condition={weather?.condition}
+        sunrise={weather?.sunrise}
+        sunset={weather?.sunset}
+      />
 
-        <SearchBar
-          onSearch={handleSearch}
-          onLocationSearch={handleLocationSearch}
-          theme={theme}
-        />
+      {/* Global Universal Search Modal (Ctrl+K) */}
+      <GlobalSearchModal />
 
-        {loading && (
-          <div className="text-center mt-8">
-            <div className="loader mx-auto"></div>
+      {/* Main Page Content Shell */}
+      <div className="relative z-10 w-full flex flex-col flex-1">
+        <Navbar />
 
-            <p
-              className={`mt-4 ${
-                theme === "dark" ? "text-gray-300" : "text-slate-700"
-              }`}
-            >
-              Fetching Weather...
-            </p>
-          </div>
-        )}
+        <main className="w-full max-w-7xl mx-auto px-4 flex-1">
+          <AnimatedRoutes />
+        </main>
 
-        {error && (
-          <div className="bg-red-500/20 border border-red-400 rounded-xl mt-6 p-4">
-            <p className="text-red-300 text-center">{error}</p>
-          </div>
-        )}
-
-        {!loading && weather && (
-          <>
-            <WeatherCard
-                {...weather}
-                theme={theme}
-                aiAdvice={aiAdvice}
-                aiLoading={aiLoading}
-                onRegenerate={() => generateAI(weather)}
-              />
-          </>
-        )}
+        <Footer theme={theme} />
       </div>
     </div>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <BrowserRouter>
+      <WeatherProvider>
+        <WeatherAppLayout />
+      </WeatherProvider>
+    </BrowserRouter>
+  );
+}
