@@ -122,7 +122,7 @@ export default function GlobalSearchModal() {
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 sm:pt-28 px-4">
+      <div className="fixed inset-0 z-50 flex items-start justify-center pt-10 sm:pt-28 px-3 sm:px-4">
         {/* Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -138,10 +138,10 @@ export default function GlobalSearchModal() {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.96, y: -16 }}
           transition={{ duration: 0.2, ease: "easeOut" }}
-          className="apple-card relative w-full max-w-2xl p-6 sm:p-7 shadow-2xl z-10"
+          className="apple-card relative w-full max-w-2xl p-4 sm:p-7 shadow-2xl z-10"
         >
           {/* Header */}
-          <div className="flex items-center justify-between pb-3 border-b border-[var(--border-subtle)]">
+          <div className="flex items-center justify-between pb-2.5 sm:pb-3 border-b border-[var(--border-subtle)]">
             <div className="flex items-center gap-2 text-[var(--accent-primary)] dark:text-[#8E8AFF] text-xs font-semibold uppercase tracking-wider">
               <Command size={14} /> Spotlight Search
             </div>
@@ -158,41 +158,41 @@ export default function GlobalSearchModal() {
             </div>
           </div>
 
-          {/* Search Input Bar (Day Mode: #FFF9F2, border #BFA994, text #2E2118, focus ring) */}
-          <div className="mt-4 flex items-center gap-2 h-14 px-3 rounded-2xl border border-[var(--border-elevated)] bg-[var(--surface-card)] focus-within:border-[var(--accent-primary)] focus-within:ring-4 focus-within:ring-[#7A4F35]/15 transition-all shadow-xs">
-            <Search size={20} className="text-[var(--accent-primary)] dark:text-[#8E8AFF] ml-1 shrink-0" />
+          {/* Search Input Bar */}
+          <div className="mt-3 sm:mt-4 flex items-center gap-1.5 sm:gap-2 h-12 sm:h-14 px-2.5 sm:px-3 rounded-2xl border border-[var(--border-elevated)] bg-[var(--surface-card)] focus-within:border-[var(--accent-primary)] focus-within:ring-4 focus-within:ring-[#7A4F35]/15 transition-all shadow-xs">
+            <Search size={18} className="text-[var(--accent-primary)] dark:text-[#8E8AFF] ml-1 shrink-0" />
             <input
               type="text"
               autoFocus
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Search any global city, airport, or coordinates..."
-              className="w-full py-2 px-2 bg-transparent text-base outline-none font-medium placeholder:text-[var(--text-muted)] text-[var(--text-primary)]"
+              placeholder="Search any global city..."
+              className="w-full min-w-0 py-2 px-1.5 bg-transparent text-sm sm:text-base outline-none font-medium placeholder:text-[var(--text-muted)] text-[var(--text-primary)]"
             />
             {query && (
               <button
                 onClick={() => setQuery("")}
-                className="p-1.5 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition"
+                className="p-1 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition"
               >
-                <X size={16} />
+                <X size={15} />
               </button>
             )}
             <button
               onClick={startVoiceSearch}
-              className={`p-2 rounded-xl transition ${
+              className={`p-1.5 sm:p-2 rounded-xl transition ${
                 isListening ? "bg-rose-500 text-white animate-pulse" : "text-[var(--text-muted)] hover:text-[var(--accent-primary)]"
               }`}
               title="Voice Search"
             >
-              {isListening ? <MicOff size={18} /> : <Mic size={18} />}
+              {isListening ? <MicOff size={16} /> : <Mic size={16} />}
             </button>
             <button
               onClick={() => handleSubmit()}
               disabled={loading || !query.trim()}
-              className="apple-btn-primary px-4 py-2 text-xs font-semibold shrink-0"
+              className="apple-btn-primary px-3 sm:px-4 py-1.5 sm:py-2 text-xs font-semibold shrink-0"
             >
-              {loading ? "Searching..." : "Search"}
+              {loading ? "..." : "Search"}
             </button>
           </div>
 

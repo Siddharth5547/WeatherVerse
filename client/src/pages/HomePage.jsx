@@ -114,19 +114,19 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="space-y-8 pb-16 pt-2">
+    <div className="space-y-6 sm:space-y-8 pb-16 pt-2">
       {/* 1. WeatherVerse Hero Section (Warm Daylight Gradient in Day, OLED Black in Night) */}
       <motion.section
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="day-hero-gradient relative overflow-hidden p-8 sm:p-12 text-center rounded-[28px]"
+        className="day-hero-gradient relative overflow-hidden p-5 sm:p-8 md:p-12 text-center rounded-[24px] sm:rounded-[28px]"
       >
         {/* Top Floating Badge Bar */}
-        <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
-          <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] dark:text-[#8E8AFF] border border-[var(--accent-primary)]/20">
-              <MapPin size={12} /> Live Station
+        <div className="flex flex-wrap items-center justify-between gap-2.5 sm:gap-3 mb-4 sm:mb-6">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <span className="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] dark:text-[#8E8AFF] border border-[var(--accent-primary)]/20">
+              <MapPin size={11} /> Live Station
             </span>
             <span className="hidden sm:inline-flex items-center px-3 py-1 rounded-full text-xs font-medium text-[var(--text-secondary)] bg-[var(--surface-card)]/80 border border-[var(--border-subtle)]">
               {currentMood.mood} • {currentMood.desc}
@@ -135,13 +135,13 @@ export default function HomePage() {
 
           <button
             onClick={() => toggleSaveLocation(weather)}
-            className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all ${
+            className={`inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-semibold border transition-all ${
               isSaved(city)
                 ? "bg-[#D9B77A]/30 text-[#7A4F35] dark:text-[#FFD60A] border-[#D9B77A]"
                 : "bg-[var(--surface-card)] text-[var(--text-secondary)] border-[var(--border-subtle)] hover:text-[var(--text-primary)] hover:border-[var(--accent-primary)]"
             }`}
           >
-            {isSaved(city) ? <BookmarkCheck size={14} /> : <Bookmark size={14} />}
+            {isSaved(city) ? <BookmarkCheck size={13} /> : <Bookmark size={13} />}
             {isSaved(city) ? "Bookmarked" : "Save Location"}
           </button>
         </div>
@@ -149,8 +149,8 @@ export default function HomePage() {
         {/* Hero Visuals & Typography */}
         <div className="max-w-2xl mx-auto flex flex-col items-center">
           {/* Weather Character / Icon with Warm Daylight Aura Separation */}
-          <div className="relative mb-2 flex items-center justify-center">
-            <div className="absolute w-40 h-40 sm:w-48 sm:h-48 rounded-full character-aura-day pointer-events-none" />
+          <div className="relative mb-1 sm:mb-2 flex items-center justify-center">
+            <div className="absolute w-32 h-32 sm:w-44 sm:h-44 md:w-48 md:h-48 rounded-full character-aura-day pointer-events-none" />
             <motion.div
               animate={{ y: [0, -6, 0] }}
               transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
@@ -159,53 +159,53 @@ export default function HomePage() {
               <img
                 src={icon}
                 alt={condition}
-                className="w-28 h-28 sm:w-36 sm:h-36 object-contain weather-character-badge"
+                className="w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 object-contain weather-character-badge"
               />
             </motion.div>
           </div>
 
           {/* City Name (Espresso Brown #2E2118 in Day, White #F5F5F7 in Night) */}
-          <h1 className="text-3xl sm:text-5xl font-semibold tracking-tight text-[var(--text-primary)]">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-[var(--text-primary)]">
             {city}
           </h1>
 
           {/* Giant Hero Temperature */}
-          <div className="my-2 flex items-baseline justify-center">
-            <span className="text-[88px] sm:text-[124px] font-medium tracking-tighter leading-none text-[var(--text-primary)]">
+          <div className="my-1 sm:my-2 flex items-baseline justify-center">
+            <span className="text-[72px] sm:text-[96px] md:text-[124px] font-medium tracking-tighter leading-none text-[var(--text-primary)]">
               {tempDisplay}
             </span>
-            <span className="text-3xl sm:text-5xl font-light text-[var(--accent-primary)] dark:text-[#8E8AFF] ml-1">
+            <span className="text-2xl sm:text-4xl md:text-5xl font-light text-[var(--accent-primary)] dark:text-[#8E8AFF] ml-1">
               °{unit}
             </span>
           </div>
 
           {/* Weather Condition (Coffee Brown #7A4F35 in Day, Lavender #8E8AFF in Night) */}
-          <p className="text-xl sm:text-2xl font-semibold text-[var(--accent-primary)] dark:text-[#8E8AFF] mb-2">
+          <p className="text-lg sm:text-xl md:text-2xl font-semibold text-[var(--accent-primary)] dark:text-[#8E8AFF] mb-1.5 sm:mb-2">
             {condition || description}
           </p>
 
           {/* Diurnal Pill: High / Low / Feels Like */}
-          <div className="flex flex-wrap items-center justify-center gap-3 text-sm font-medium text-[var(--text-secondary)]">
+          <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-3 text-xs sm:text-sm font-medium text-[var(--text-secondary)]">
             <span>H: <strong className="text-[var(--text-primary)]">{highTemp}°{unit}</strong></span>
-            <span>•</span>
+            <span className="opacity-40">•</span>
             <span>L: <strong className="text-[var(--text-primary)]">{lowTemp}°{unit}</strong></span>
-            <span>•</span>
+            <span className="opacity-40">•</span>
             <span>Feels like <strong className="text-[var(--text-primary)]">{feelsLikeDisplay}°{unit}</strong></span>
           </div>
 
           {/* Quick Telemetry Pills */}
-          <div className="flex flex-wrap items-center justify-center gap-3 mt-6 pt-6 border-t border-[var(--border-subtle)] w-full text-xs font-semibold text-[var(--text-secondary)]">
-            <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[var(--surface-card)] border border-[var(--border-subtle)] shadow-xs">
-              <Droplets size={14} className="text-[#8EB7C9]" />
-              <span className="text-[var(--text-primary)]">{humidity}% Humidity</span>
+          <div className="grid grid-cols-3 gap-1.5 sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-3 mt-5 sm:mt-6 pt-5 sm:pt-6 border-t border-[var(--border-subtle)] w-full text-[11px] sm:text-xs font-semibold text-[var(--text-secondary)]">
+            <div className="flex items-center justify-center gap-1 sm:gap-1.5 px-2 sm:px-3.5 py-1.5 rounded-full bg-[var(--surface-card)] border border-[var(--border-subtle)] shadow-2xs">
+              <Droplets size={13} className="text-[#8EB7C9] shrink-0" />
+              <span className="text-[var(--text-primary)] truncate">{humidity}% <span className="hidden sm:inline">Humidity</span></span>
             </div>
-            <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[var(--surface-card)] border border-[var(--border-subtle)] shadow-xs">
-              <Wind size={14} className="text-[#8EAD91]" />
-              <span className="text-[var(--text-primary)]">{convertWind(wind, unit)} Wind</span>
+            <div className="flex items-center justify-center gap-1 sm:gap-1.5 px-2 sm:px-3.5 py-1.5 rounded-full bg-[var(--surface-card)] border border-[var(--border-subtle)] shadow-2xs">
+              <Wind size={13} className="text-[#8EAD91] shrink-0" />
+              <span className="text-[var(--text-primary)] truncate">{convertWind(wind, unit)}</span>
             </div>
-            <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[var(--surface-card)] border border-[var(--border-subtle)] shadow-xs">
-              <Sunrise size={14} className="text-[#D9B77A]" />
-              <span className="text-[var(--text-primary)]">{sunrise || "06:12 AM"}</span>
+            <div className="flex items-center justify-center gap-1 sm:gap-1.5 px-2 sm:px-3.5 py-1.5 rounded-full bg-[var(--surface-card)] border border-[var(--border-subtle)] shadow-2xs">
+              <Sunrise size={13} className="text-[#D9B77A] shrink-0" />
+              <span className="text-[var(--text-primary)] truncate">{sunrise || "06:12 AM"}</span>
             </div>
           </div>
         </div>
@@ -213,10 +213,10 @@ export default function HomePage() {
 
       {/* 2. 24-Hour Horizontal Scrubber Strip */}
       {hourly && hourly.length > 0 && (
-        <section className="apple-card p-6 sm:p-8">
-          <div className="flex items-center justify-between mb-4 pb-3 border-b border-[var(--border-subtle)]">
+        <section className="apple-card p-4 sm:p-6 md:p-8 overflow-hidden">
+          <div className="flex items-center justify-between mb-3 sm:mb-4 pb-2.5 sm:pb-3 border-b border-[var(--border-subtle)]">
             <div className="flex items-center gap-2">
-              <Clock size={16} className="text-[var(--accent-primary)] dark:text-[#8E8AFF]" />
+              <Clock size={15} className="text-[var(--accent-primary)] dark:text-[#8E8AFF]" />
               <h2 className="text-xs font-semibold tracking-wider uppercase text-[var(--text-muted)]">
                 24-Hour Hourly Forecast
               </h2>
@@ -230,27 +230,27 @@ export default function HomePage() {
           </div>
 
           {/* Horizontal Scrubber */}
-          <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-none">
+          <div className="flex items-center gap-2.5 sm:gap-3 overflow-x-auto pb-2 scrollbar-none touch-pan-x">
             {hourly.slice(0, 24).map((hour, idx) => {
               const isNow = idx === 0;
               return (
                 <div
                   key={idx}
-                  className={`flex flex-col items-center justify-between min-w-[76px] p-3.5 rounded-2xl border transition-all ${
+                  className={`flex flex-col items-center justify-between min-w-[72px] sm:min-w-[76px] p-2.5 sm:p-3.5 rounded-2xl border transition-all shrink-0 ${
                     isNow
                       ? "bg-[var(--accent-primary)] text-[#FFF9F2] border-[var(--accent-primary)] shadow-sm font-semibold"
                       : "bg-[var(--surface-card)] border-[var(--border-subtle)] hover:border-[var(--accent-primary)]/40"
                   }`}
                 >
-                  <span className={`text-xs font-medium ${isNow ? "text-[#FFF9F2] font-bold" : "text-[var(--text-secondary)]"}`}>
+                  <span className={`text-[11px] sm:text-xs font-medium ${isNow ? "text-[#FFF9F2] font-bold" : "text-[var(--text-secondary)]"}`}>
                     {isNow ? "Now" : hour.time}
                   </span>
-                  <img src={hour.icon} alt="" className="w-9 h-9 my-1.5 object-contain drop-shadow-xs" />
+                  <img src={hour.icon} alt="" className="w-8 h-8 sm:w-9 sm:h-9 my-1 object-contain drop-shadow-xs" />
                   <span className={`text-sm font-bold ${isNow ? "text-[#FFF9F2]" : "text-[var(--text-primary)]"}`}>
                     {convertTemp(hour.temp, unit)}°
                   </span>
                   {hour.pop > 0 && (
-                    <span className={`text-[10px] font-semibold mt-1 ${isNow ? "text-[#D9B77A]" : "text-[#8EB7C9]"}`}>
+                    <span className={`text-[10px] font-semibold mt-0.5 ${isNow ? "text-[#D9B77A]" : "text-[#8EB7C9]"}`}>
                       {hour.pop}%
                     </span>
                   )}
@@ -262,7 +262,7 @@ export default function HomePage() {
       )}
 
       {/* 3. "Your Day with Weather" Diurnal Breakdown */}
-      <section className="apple-card p-6 sm:p-8">
+      <section className="apple-card p-4 sm:p-6 md:p-8">
         <div className="flex items-center justify-between mb-6 pb-4 border-b border-[var(--border-subtle)]">
           <div>
             <h2 className="text-lg font-semibold text-[var(--text-primary)]">Your Day with Weather</h2>
@@ -302,11 +302,11 @@ export default function HomePage() {
       </section>
 
       {/* 4. Feature Portals */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {/* Portal 1: 7-Day Forecast */}
         <Link
           to="/forecast"
-          className="apple-card p-6 flex flex-col justify-between group hover:border-[var(--accent-primary)]/50 transition-all"
+          className="apple-card p-5 sm:p-6 flex flex-col justify-between group hover:border-[var(--accent-primary)]/50 transition-all"
         >
           <div>
             <div className="w-10 h-10 rounded-2xl bg-[var(--accent-primary)]/10 border border-[var(--accent-primary)]/20 flex items-center justify-center text-[var(--accent-primary)] dark:text-[#8E8AFF] mb-4 group-hover:scale-105 transition-transform">
@@ -327,7 +327,7 @@ export default function HomePage() {
         {/* Portal 2: Deep Analytics */}
         <Link
           to="/weather"
-          className="apple-card p-6 flex flex-col justify-between group hover:border-[var(--accent-secondary)]/50 transition-all"
+          className="apple-card p-5 sm:p-6 flex flex-col justify-between group hover:border-[var(--accent-secondary)]/50 transition-all"
         >
           <div>
             <div className="w-10 h-10 rounded-2xl bg-[var(--accent-secondary)]/15 border border-[var(--accent-secondary)]/25 flex items-center justify-center text-[var(--accent-secondary)] mb-4 group-hover:scale-105 transition-transform">
@@ -348,7 +348,7 @@ export default function HomePage() {
         {/* Portal 3: Air Quality */}
         <Link
           to="/air-quality"
-          className="apple-card p-6 flex flex-col justify-between group hover:border-[#8EAD91]/50 transition-all"
+          className="apple-card p-5 sm:p-6 flex flex-col justify-between group hover:border-[#8EAD91]/50 transition-all"
         >
           <div>
             <div className="w-10 h-10 rounded-2xl bg-[#8EAD91]/20 border border-[#8EAD91]/30 flex items-center justify-center text-[#557659] dark:text-[#8EAD91] mb-4 group-hover:scale-105 transition-transform">
@@ -369,7 +369,7 @@ export default function HomePage() {
         {/* Portal 4: AI Copilot */}
         <Link
           to="/ai"
-          className="apple-card p-6 flex flex-col justify-between group hover:border-[var(--accent-primary)]/50 transition-all"
+          className="apple-card p-5 sm:p-6 flex flex-col justify-between group hover:border-[var(--accent-primary)]/50 transition-all"
         >
           <div>
             <div className="w-10 h-10 rounded-2xl bg-[var(--accent-primary)]/10 border border-[var(--accent-primary)]/20 flex items-center justify-center text-[var(--accent-primary)] dark:text-[#8E8AFF] mb-4 group-hover:scale-105 transition-transform">

@@ -167,17 +167,17 @@ export default function AirQualityPage() {
       </div>
 
       {/* Hero Air Quality Banner */}
-      <div className="apple-card p-6 sm:p-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+      <div className="apple-card p-4 sm:p-6 md:p-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center">
           {/* Left Column: Grade Gauge */}
           <div className="lg:col-span-5 space-y-4">
-            <div className={`p-6 rounded-2xl border ${info.bgColor}`}>
-              <div className="flex items-center gap-4">
-                <div className={`text-6xl sm:text-7xl font-semibold tracking-tight ${info.color}`}>
+            <div className={`p-4 sm:p-6 rounded-2xl border ${info.bgColor}`}>
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className={`text-5xl sm:text-6xl md:text-7xl font-semibold tracking-tight ${info.color}`}>
                   {index}
                 </div>
                 <div>
-                  <span className={`text-xl sm:text-2xl font-bold block ${info.color}`}>
+                  <span className={`text-lg sm:text-xl md:text-2xl font-bold block ${info.color}`}>
                     {info.status}
                   </span>
                   <span className="text-xs text-[var(--text-secondary)] font-medium">
@@ -186,8 +186,8 @@ export default function AirQualityPage() {
                 </div>
               </div>
 
-              <div className="mt-4 pt-4 border-t border-[var(--border-subtle)]">
-                <p className="text-sm leading-relaxed text-[var(--text-primary)] font-medium">
+              <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-[var(--border-subtle)]">
+                <p className="text-xs sm:text-sm leading-relaxed text-[var(--text-primary)] font-medium">
                   {info.advice}
                 </p>
               </div>
@@ -195,13 +195,13 @@ export default function AirQualityPage() {
 
             {/* Segmented Color Spectrum Bar */}
             <div className="space-y-1.5">
-              <div className="flex justify-between text-[11px] font-semibold text-[var(--text-muted)]">
+              <div className="flex justify-between text-[9px] sm:text-[11px] font-semibold text-[var(--text-muted)]">
                 <span>Good (1)</span>
-                <span>Moderate (2)</span>
+                <span>Mod (2)</span>
                 <span>Unhealthy (3-4)</span>
-                <span>Hazardous (5-6)</span>
+                <span>Hazard (5-6)</span>
               </div>
-              <div className="grid grid-cols-6 gap-1.5 h-3 rounded-full overflow-hidden bg-[var(--surface-card-secondary)] border border-[var(--border-subtle)] p-0.5">
+              <div className="grid grid-cols-6 gap-1 sm:gap-1.5 h-2.5 sm:h-3 rounded-full overflow-hidden bg-[var(--surface-card-secondary)] border border-[var(--border-subtle)] p-0.5">
                 {["bg-[#8EAD91]", "bg-[#D9B77A]", "bg-[#B9825A]", "bg-[#FF3B30]", "bg-[#AF52DE]", "bg-red-600"].map(
                   (col, i) => (
                     <div
@@ -218,27 +218,27 @@ export default function AirQualityPage() {
 
           {/* Right Column: Outdoor Activity & Sensitive Group Directives */}
           <div className="lg:col-span-7 space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="p-5 rounded-2xl bg-[var(--surface-card-secondary)] border border-[var(--border-subtle)]">
-                <span className="text-xs text-[var(--text-secondary)] flex items-center gap-1.5 font-semibold mb-2">
-                  <Smile size={16} className="text-[#8EAD91]" /> Outdoor Activity & Running
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              <div className="p-4 sm:p-5 rounded-2xl bg-[var(--surface-card-secondary)] border border-[var(--border-subtle)]">
+                <span className="text-xs text-[var(--text-secondary)] flex items-center gap-1.5 font-semibold mb-1.5 sm:mb-2">
+                  <Smile size={15} className="text-[#8EAD91]" /> Outdoor Activity & Running
                 </span>
-                <span className="text-lg font-bold text-[var(--text-primary)] block">
+                <span className="text-base sm:text-lg font-bold text-[var(--text-primary)] block">
                   {info.outdoorScore}
                 </span>
-                <p className="text-xs text-[var(--text-secondary)] mt-2 leading-relaxed">
+                <p className="text-xs text-[var(--text-secondary)] mt-1.5 sm:mt-2 leading-relaxed">
                   Safe for cardiovascular exercise, cycling, outdoor recreation, and ventilation.
                 </p>
               </div>
 
-              <div className="p-5 rounded-2xl bg-[var(--surface-card-secondary)] border border-[var(--border-subtle)]">
-                <span className="text-xs text-[var(--text-secondary)] flex items-center gap-1.5 font-semibold mb-2">
-                  <AlertCircle size={16} className="text-[#D9B77A]" /> Sensitive Groups Guidance
+              <div className="p-4 sm:p-5 rounded-2xl bg-[var(--surface-card-secondary)] border border-[var(--border-subtle)]">
+                <span className="text-xs text-[var(--text-secondary)] flex items-center gap-1.5 font-semibold mb-1.5 sm:mb-2">
+                  <AlertCircle size={15} className="text-[#D9B77A]" /> Sensitive Groups Guidance
                 </span>
                 <span className="text-base font-bold text-[var(--text-primary)] block">
                   {index <= 2 ? "Minimal Hazard Risk" : "Precautionary Protocols"}
                 </span>
-                <p className="text-xs text-[var(--text-secondary)] mt-2 leading-relaxed">
+                <p className="text-xs text-[var(--text-secondary)] mt-1.5 sm:mt-2 leading-relaxed">
                   {info.sensitiveAdvice}
                 </p>
               </div>
@@ -254,7 +254,7 @@ export default function AirQualityPage() {
           <p className="text-xs text-[var(--text-secondary)]">Actual measured concentrations provided by live atmospheric sensor telemetry</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           {pollutantData.map((p, idx) => {
             const ratio = Math.min(100, Math.round((p.val / p.max) * 100));
             const isElevated = p.val > p.safe;
@@ -262,7 +262,7 @@ export default function AirQualityPage() {
             return (
               <div
                 key={idx}
-                className="apple-card p-5"
+                className="apple-card p-4 sm:p-5"
               >
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-base font-bold text-[var(--accent-primary)] dark:text-[#8E8AFF]">

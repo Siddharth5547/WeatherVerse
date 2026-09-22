@@ -45,18 +45,18 @@ export default function LocationsPage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {!isCurrentCitySaved && weather && (
             <button
               onClick={() => toggleSaveLocation(weather)}
-              className="apple-btn-primary px-4 py-2 text-xs font-medium flex items-center gap-1.5 shrink-0"
+              className="apple-btn-primary px-3 sm:px-4 py-2 text-xs font-medium flex items-center gap-1.5 shrink-0"
             >
               <Plus size={14} /> Save Current ({city})
             </button>
           )}
           <button
             onClick={() => setIsSearchOpen(true)}
-            className="apple-btn-secondary px-4 py-2 text-xs font-medium"
+            className="apple-btn-secondary px-3.5 sm:px-4 py-2 text-xs font-medium"
           >
             + Search City
           </button>
@@ -65,7 +65,7 @@ export default function LocationsPage() {
 
       {/* Locations Grid */}
       {savedLocations.length === 0 ? (
-        <div className="apple-card p-12 text-center">
+        <div className="apple-card p-6 sm:p-12 text-center">
           <Bookmark size={36} className="mx-auto mb-3 text-[var(--accent-primary)] dark:text-[#8E8AFF] opacity-60" />
           <h3 className="font-semibold text-lg text-[var(--text-primary)]">No Saved Locations</h3>
           <p className="text-xs text-[var(--text-secondary)] max-w-md mx-auto mt-1 mb-5">
@@ -79,7 +79,7 @@ export default function LocationsPage() {
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
           <AnimatePresence>
             {savedLocations.map((loc) => {
               const isCurrent = loc.city.toLowerCase() === city.toLowerCase();
@@ -92,7 +92,7 @@ export default function LocationsPage() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.92 }}
                   transition={{ duration: 0.2 }}
-                  className={`apple-card p-6 relative overflow-hidden group hover:border-[var(--accent-primary)]/40 transition-all ${
+                  className={`apple-card p-4 sm:p-6 relative overflow-hidden group hover:border-[var(--accent-primary)]/40 transition-all ${
                     isCurrent ? "ring-2 ring-[var(--accent-primary)] border-[var(--accent-primary)]" : ""
                   }`}
                 >

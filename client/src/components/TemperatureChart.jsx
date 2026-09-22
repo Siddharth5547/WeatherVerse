@@ -56,28 +56,28 @@ export default function TemperatureChart({ hourly = [], unit = "C", theme = "dar
   };
 
   return (
-    <div className="apple-card p-6 sm:p-8">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-xl bg-[var(--accent-primary)]/10 border border-[var(--accent-primary)]/20 flex items-center justify-center text-[var(--accent-primary)] dark:text-[#8E8AFF]">
+    <div className="apple-card p-4 sm:p-6 md:p-8 w-full min-w-0 overflow-hidden">
+      <div className="flex flex-wrap items-center justify-between gap-2.5 mb-3 sm:mb-4">
+        <div className="flex items-center gap-2 sm:gap-2.5">
+          <div className="w-8 h-8 rounded-xl bg-[var(--accent-primary)]/10 border border-[var(--accent-primary)]/20 flex items-center justify-center text-[var(--accent-primary)] dark:text-[#8E8AFF] shrink-0">
             <TrendingUp size={16} />
           </div>
           <div>
-            <h3 className="font-semibold text-base sm:text-lg text-[var(--text-primary)]">
+            <h3 className="font-semibold text-base sm:text-lg text-[var(--text-primary)] leading-tight">
               24-Hour Temperature Trajectory
             </h3>
-            <p className="text-xs text-[var(--text-secondary)]">Diurnal continuous thermal gradient</p>
+            <p className="text-[11px] sm:text-xs text-[var(--text-secondary)]">Diurnal continuous thermal gradient</p>
           </div>
         </div>
 
-        <div className="text-xs font-semibold px-3 py-1 rounded-full bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] dark:text-[#8E8AFF] border border-[var(--accent-primary)]/20">
+        <div className="text-[11px] sm:text-xs font-semibold px-2.5 sm:px-3 py-1 rounded-full bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] dark:text-[#8E8AFF] border border-[var(--accent-primary)]/20">
           Peak {Math.max(...temps)}°{unit}
         </div>
       </div>
 
-      <div className="h-56 sm:h-64 w-full pt-2">
+      <div className="h-52 sm:h-64 w-full pt-1 sm:pt-2">
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={data} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
+          <AreaChart data={data} margin={{ top: 8, right: 6, left: -26, bottom: 0 }}>
             <defs>
               <linearGradient id="appleTempGradient" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor={gradientColor} stopOpacity={isDark ? 0.45 : 0.35} />

@@ -65,10 +65,10 @@ function WeatherAppLayout() {
       <GlobalSearchModal />
 
       {/* Main Page Content Shell */}
-      <div className="relative z-10 w-full flex flex-col flex-1">
+      <div className="relative z-10 w-full flex flex-col flex-1 min-w-0">
         <Navbar />
 
-        <main className="w-full max-w-7xl mx-auto px-4 flex-1">
+        <main className="w-full max-w-7xl mx-auto px-2.5 sm:px-4 flex-1 min-w-0">
           <AnimatedRoutes />
         </main>
 

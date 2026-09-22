@@ -3,9 +3,9 @@ import { CloudRain, Sparkles, Cpu } from "lucide-react";
 
 export default function Footer({ theme = "dark" }) {
   return (
-    <footer className="w-full max-w-7xl mx-auto px-4 mt-16 pb-12 z-20 relative">
-      <div className="apple-card p-8">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-6 border-b border-[var(--border-subtle)]">
+    <footer className="w-full max-w-7xl mx-auto px-2.5 sm:px-4 mt-10 sm:mt-16 pb-8 sm:pb-12 z-20 relative">
+      <div className="apple-card p-5 sm:p-8">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-5 sm:gap-6 pb-5 sm:pb-6 border-b border-[var(--border-subtle)]">
           <div className="flex items-center gap-3 text-center md:text-left">
             <div className="w-9 h-9 rounded-xl bg-[#5856D6]/10 border border-[#5856D6]/20 flex items-center justify-center text-[#5856D6] dark:text-[#8E8AFF]">
               <CloudRain size={18} />

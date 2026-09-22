@@ -62,7 +62,7 @@ export default function ForecastPage() {
       </div>
 
       {/* 7-Day Apple Card Deck with Explicit Day Mode Highlight */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
+      <div className="flex overflow-x-auto pb-3 gap-2.5 sm:grid sm:grid-cols-4 lg:grid-cols-7 scrollbar-none touch-pan-x w-full">
         {sevenDay.slice(0, 7).map((item, index) => {
           const isSelected = selectedDayIndex === index;
           const maxTemp = convertTemp(item.maxTemp, unit);
@@ -74,7 +74,7 @@ export default function ForecastPage() {
               whileHover={{ y: -3 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => setSelectedDayIndex(index)}
-              className={`p-4 rounded-2xl border text-left transition-all duration-200 relative flex flex-col justify-between h-48 ${
+              className={`shrink-0 w-[136px] sm:w-auto p-3.5 sm:p-4 rounded-2xl border text-left transition-all duration-200 relative flex flex-col justify-between h-44 sm:h-48 ${
                 isSelected
                   ? isLight
                     ? "bg-[#7A4F35] text-[#FFF9F2] border-[#7A4F35] shadow-md ring-2 ring-[#7A4F35]/40"
@@ -83,7 +83,7 @@ export default function ForecastPage() {
               }`}
             >
               {isSelected && (
-                <span className={`absolute top-3 right-3 w-2 h-2 rounded-full ${
+                <span className={`absolute top-2.5 right-2.5 sm:top-3 sm:right-3 w-2 h-2 rounded-full ${
                   isLight ? "bg-[#D9B77A]" : "bg-[#8E8AFF]"
                 }`} />
               )}
@@ -107,13 +107,13 @@ export default function ForecastPage() {
               </div>
 
               {/* Weather Icon & Condition */}
-              <div className="my-2 text-center">
+              <div className="my-1.5 text-center">
                 <img
                   src={item.icon}
                   alt={item.condition}
-                  className="w-12 h-12 mx-auto object-contain drop-shadow-sm"
+                  className="w-10 h-10 sm:w-12 sm:h-12 mx-auto object-contain drop-shadow-sm"
                 />
-                <span className={`text-[11px] font-medium block truncate mt-1 ${
+                <span className={`text-[11px] font-medium block truncate mt-0.5 ${
                   isSelected
                     ? isLight ? "text-[#E9D8C5]" : "text-[#AEAEB2]"
                     : "text-[var(--text-secondary)]"
@@ -148,7 +148,7 @@ export default function ForecastPage() {
                     <CloudRain size={11} /> {item.rainProb}%
                   </span>
                   <span className={isSelected && isLight ? "text-[#E9D8C5]" : "text-[var(--text-muted)]"}>
-                    {item.humidity}% hum
+                    {item.humidity}%
                   </span>
                 </div>
               </div>
@@ -165,7 +165,7 @@ export default function ForecastPage() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -8 }}
           transition={{ duration: 0.25 }}
-          className="apple-card p-6 sm:p-8"
+          className="apple-card p-5 sm:p-8"
         >
           {/* Header of Detail */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-[var(--border-subtle)]">
@@ -204,83 +204,83 @@ export default function ForecastPage() {
           </div>
 
           {/* Full Grid of Selected Day Telemetry */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4 mt-6">
             {/* 1. Feels Like */}
-            <div className="p-4 rounded-2xl bg-[var(--surface-card-secondary)] border border-[var(--border-subtle)]">
-              <span className="text-xs font-semibold text-[var(--text-secondary)] flex items-center gap-1.5 mb-1">
+            <div className="p-3 sm:p-4 rounded-2xl bg-[var(--surface-card-secondary)] border border-[var(--border-subtle)]">
+              <span className="text-[11px] sm:text-xs font-semibold text-[var(--text-secondary)] flex items-center gap-1.5 mb-1">
                 <Sun size={14} className="text-[#D9B77A]" /> Feels Like
               </span>
-              <span className="text-2xl font-bold text-[var(--text-primary)]">{feelsLikeEstimated}°{unit}</span>
-              <p className="text-[11px] text-[var(--text-muted)] mt-1">Thermal sensory adjustment</p>
+              <span className="text-xl sm:text-2xl font-bold text-[var(--text-primary)]">{feelsLikeEstimated}°{unit}</span>
+              <p className="text-[10px] sm:text-[11px] text-[var(--text-muted)] mt-1 truncate">Thermal adjustment</p>
             </div>
 
             {/* 2. Precipitation Probability */}
-            <div className="p-4 rounded-2xl bg-[var(--surface-card-secondary)] border border-[var(--border-subtle)]">
-              <span className="text-xs font-semibold text-[var(--text-secondary)] flex items-center gap-1.5 mb-1">
+            <div className="p-3 sm:p-4 rounded-2xl bg-[var(--surface-card-secondary)] border border-[var(--border-subtle)]">
+              <span className="text-[11px] sm:text-xs font-semibold text-[var(--text-secondary)] flex items-center gap-1.5 mb-1">
                 <CloudRain size={14} className="text-[#8EB7C9]" /> Precipitation
               </span>
-              <span className="text-2xl font-bold text-[#8EB7C9]">{selectedDay.rainProb}%</span>
-              <p className="text-[11px] text-[var(--text-muted)] mt-1">
-                {selectedDay.rainProb > 40 ? "Rain protection recommended" : "Low precipitation likelihood"}
+              <span className="text-xl sm:text-2xl font-bold text-[#8EB7C9]">{selectedDay.rainProb}%</span>
+              <p className="text-[10px] sm:text-[11px] text-[var(--text-muted)] mt-1 truncate">
+                {selectedDay.rainProb > 40 ? "Rain likely" : "Low likelihood"}
               </p>
             </div>
 
             {/* 3. Relative Humidity */}
-            <div className="p-4 rounded-2xl bg-[var(--surface-card-secondary)] border border-[var(--border-subtle)]">
-              <span className="text-xs font-semibold text-[var(--text-secondary)] flex items-center gap-1.5 mb-1">
+            <div className="p-3 sm:p-4 rounded-2xl bg-[var(--surface-card-secondary)] border border-[var(--border-subtle)]">
+              <span className="text-[11px] sm:text-xs font-semibold text-[var(--text-secondary)] flex items-center gap-1.5 mb-1">
                 <Droplets size={14} className="text-[#8EB7C9]" /> Relative Humidity
               </span>
-              <span className="text-2xl font-bold text-[var(--text-primary)]">{selectedDay.humidity}%</span>
-              <p className="text-[11px] text-[var(--text-muted)] mt-1">
-                {selectedDay.humidity > 70 ? "High moisture saturation" : "Comfortable ambient range"}
+              <span className="text-xl sm:text-2xl font-bold text-[var(--text-primary)]">{selectedDay.humidity}%</span>
+              <p className="text-[10px] sm:text-[11px] text-[var(--text-muted)] mt-1 truncate">
+                {selectedDay.humidity > 70 ? "High moisture" : "Comfortable"}
               </p>
             </div>
 
             {/* 4. Wind Speed */}
-            <div className="p-4 rounded-2xl bg-[var(--surface-card-secondary)] border border-[var(--border-subtle)]">
-              <span className="text-xs font-semibold text-[var(--text-secondary)] flex items-center gap-1.5 mb-1">
+            <div className="p-3 sm:p-4 rounded-2xl bg-[var(--surface-card-secondary)] border border-[var(--border-subtle)]">
+              <span className="text-[11px] sm:text-xs font-semibold text-[var(--text-secondary)] flex items-center gap-1.5 mb-1">
                 <Wind size={14} className="text-[#8EAD91]" /> Wind Velocity
               </span>
-              <span className="text-2xl font-bold text-[var(--text-primary)]">{convertWind(selectedDay.windSpeed, unit)}</span>
-              <p className="text-[11px] text-[var(--text-muted)] mt-1">Steady atmospheric breeze</p>
+              <span className="text-xl sm:text-2xl font-bold text-[var(--text-primary)]">{convertWind(selectedDay.windSpeed, unit)}</span>
+              <p className="text-[10px] sm:text-[11px] text-[var(--text-muted)] mt-1 truncate">Atmospheric airflow</p>
             </div>
 
             {/* 5. Barometric Pressure */}
-            <div className="p-4 rounded-2xl bg-[var(--surface-card-secondary)] border border-[var(--border-subtle)]">
-              <span className="text-xs font-semibold text-[var(--text-secondary)] flex items-center gap-1.5 mb-1">
+            <div className="p-3 sm:p-4 rounded-2xl bg-[var(--surface-card-secondary)] border border-[var(--border-subtle)]">
+              <span className="text-[11px] sm:text-xs font-semibold text-[var(--text-secondary)] flex items-center gap-1.5 mb-1">
                 <Gauge size={14} className="text-[var(--accent-primary)] dark:text-[#8E8AFF]" /> Pressure
               </span>
-              <span className="text-2xl font-bold text-[var(--text-primary)]">{pressure} hPa</span>
-              <p className="text-[11px] text-[var(--text-muted)] mt-1">Standard sea level pressure</p>
+              <span className="text-xl sm:text-2xl font-bold text-[var(--text-primary)]">{pressure} hPa</span>
+              <p className="text-[10px] sm:text-[11px] text-[var(--text-muted)] mt-1 truncate">Sea level baseline</p>
             </div>
 
             {/* 6. Visibility */}
-            <div className="p-4 rounded-2xl bg-[var(--surface-card-secondary)] border border-[var(--border-subtle)]">
-              <span className="text-xs font-semibold text-[var(--text-secondary)] flex items-center gap-1.5 mb-1">
-                <Eye size={14} className="text-[#8EAD91]" /> Optical Visibility
+            <div className="p-3 sm:p-4 rounded-2xl bg-[var(--surface-card-secondary)] border border-[var(--border-subtle)]">
+              <span className="text-[11px] sm:text-xs font-semibold text-[var(--text-secondary)] flex items-center gap-1.5 mb-1">
+                <Eye size={14} className="text-[#8EAD91]" /> Visibility
               </span>
-              <span className="text-2xl font-bold text-[var(--text-primary)]">{visibility} km</span>
-              <p className="text-[11px] text-[var(--text-muted)] mt-1">Clear line-of-sight horizon</p>
+              <span className="text-xl sm:text-2xl font-bold text-[var(--text-primary)]">{visibility} km</span>
+              <p className="text-[10px] sm:text-[11px] text-[var(--text-muted)] mt-1 truncate">Horizon view</p>
             </div>
 
             {/* 7. UV Index */}
-            <div className="p-4 rounded-2xl bg-[var(--surface-card-secondary)] border border-[var(--border-subtle)]">
-              <span className="text-xs font-semibold text-[var(--text-secondary)] flex items-center gap-1.5 mb-1">
+            <div className="p-3 sm:p-4 rounded-2xl bg-[var(--surface-card-secondary)] border border-[var(--border-subtle)]">
+              <span className="text-[11px] sm:text-xs font-semibold text-[var(--text-secondary)] flex items-center gap-1.5 mb-1">
                 <Sun size={14} className="text-[#D9B77A]" /> UV Index
               </span>
-              <span className="text-2xl font-bold text-[var(--accent-primary)] dark:text-[#FFD60A]">
+              <span className="text-xl sm:text-2xl font-bold text-[var(--accent-primary)] dark:text-[#FFD60A]">
                 {Math.min(11, Math.max(1, Math.round(9 - (selectedDay.rainProb / 15))))} / 11
               </span>
-              <p className="text-[11px] text-[var(--text-muted)] mt-1">Moderate solar irradiance</p>
+              <p className="text-[10px] sm:text-[11px] text-[var(--text-muted)] mt-1 truncate">Solar exposure</p>
             </div>
 
             {/* 8. Solar Window */}
-            <div className="p-4 rounded-2xl bg-[var(--surface-card-secondary)] border border-[var(--border-subtle)]">
-              <span className="text-xs font-semibold text-[var(--text-secondary)] flex items-center gap-1.5 mb-1">
+            <div className="p-3 sm:p-4 rounded-2xl bg-[var(--surface-card-secondary)] border border-[var(--border-subtle)]">
+              <span className="text-[11px] sm:text-xs font-semibold text-[var(--text-secondary)] flex items-center gap-1.5 mb-1">
                 <Sunrise size={14} className="text-[#D9B77A]" /> Solar Window
               </span>
-              <span className="text-sm font-bold block text-[var(--text-primary)]">{sunrise} → {sunset}</span>
-              <p className="text-[11px] text-[var(--text-muted)] mt-1">Natural daylight duration</p>
+              <span className="text-xs sm:text-sm font-bold block text-[var(--text-primary)] truncate">{sunrise} → {sunset}</span>
+              <p className="text-[10px] sm:text-[11px] text-[var(--text-muted)] mt-1 truncate">Natural daylight</p>
             </div>
           </div>
         </motion.div>
