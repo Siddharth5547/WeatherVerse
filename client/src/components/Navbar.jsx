@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Sun,
@@ -22,10 +22,28 @@ export default function Navbar() {
   const { theme, toggleTheme, unit, toggleUnit, city, setIsSearchOpen } = useWeather();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [time, setTime] = useState(new Date());
+  const location = useLocation();
 
+  // Keep clock updated
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
+  }, []);
+
+  // Close mobile menu on page navigation
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [location.pathname]);
+
+  // Close mobile menu on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
   const formattedTime = time.toLocaleTimeString([], {
@@ -48,14 +66,19 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-2 sm:top-4 z-40 w-full max-w-[1440px] mx-auto px-2.5 sm:px-6 mb-4 sm:mb-8">
-      <div className="apple-nav flex items-center justify-between px-3 sm:px-6 py-2 sm:py-3 rounded-[20px] sm:rounded-[24px] relative transition-all duration-500">
-        {/* Brand Logo & Title */}
-        <Link to="/" className="flex items-center gap-2 sm:gap-3 shrink-0 group min-w-0">
-          <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform ${
-            isLight
-              ? "bg-[#7A4F35] text-[#FFF9F2]"
-              : "bg-white text-[#111111]"
-          }`}>
+      <div className="apple-nav flex items-center justify-between px-3 sm:px-5 lg:px-6 py-2 sm:py-2.5 lg:py-3 rounded-[20px] sm:rounded-[24px] relative transition-all duration-500">
+        
+        {/* ======================================================== */}
+        {/* LEFT: Brand Logo & Title (Desktop, Tablet, Mobile)      */}
+        {/* ======================================================== */}
+        <Link to="/" className="flex items-center gap-2 sm:gap-2.5 shrink-0 group min-w-0">
+          <div
+            className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform ${
+              isLight
+                ? "bg-[#7A4F35] text-[#FFF9F2]"
+                : "bg-white text-[#111111]"
+            }`}
+          >
             <svg
               className="w-4 h-4 sm:w-5 sm:h-5"
               viewBox="0 0 24 24"
@@ -70,28 +93,37 @@ export default function Navbar() {
           </div>
 
           <div className="flex flex-col min-w-0">
-            <div className="flex items-center gap-1.5">
-              <span className="text-[15px] sm:text-[18px] font-semibold tracking-tight text-[var(--text-primary)] leading-none truncate">
-                WeatherVerse
-              </span>
-            </div>
+            <span className="text-[15px] sm:text-[17px] font-semibold tracking-tight text-[var(--text-primary)] leading-tight truncate">
+              WeatherVerse
+            </span>
             {city && (
-              <span className="text-[11px] font-normal text-[var(--text-muted)] hidden md:block leading-tight mt-0.5 truncate">
+              <span className="text-[11px] font-normal text-[var(--text-muted)] hidden xl:block leading-tight mt-0.5 truncate">
                 {city} • {formattedTime}
               </span>
             )}
           </div>
         </Link>
 
-        {/* Desktop Navigation Links */}
-        <nav className="hidden xl:flex items-center gap-1 p-1 rounded-full border border-[var(--border-subtle)] bg-[var(--surface-card-secondary)]">
+        {/* ======================================================== */}
+        {/* CENTER: Desktop Navigation Links (>= 1024px ONLY)       */}
+        {/* ======================================================== */}
+        <nav
+          className="hidden lg:flex items-center gap-0.5 xl:gap-1 p-1 rounded-full border border-[var(--border-subtle)] bg-[var(--surface-card-secondary)] shrink-0"
+          aria-label="Desktop primary navigation"
+        >
           {navLinks.map((link) => (
             <NavLink
               key={link.to}
               to={link.to}
               end={link.exact}
               className={({ isActive }) =>
-                `apple-nav-link ${isActive ? "active" : ""}`
+                `px-2.5 xl:px-3 py-1.5 rounded-full text-[12px] xl:text-[13px] font-medium transition-all ${
+                  isActive
+                    ? isLight
+                      ? "bg-[#7A4F35] text-[#FFF9F2] font-semibold shadow-xs"
+                      : "bg-white text-black font-semibold shadow-xs"
+                    : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-black/5 dark:hover:bg-white/5"
+                }`
               }
             >
               {link.label}
@@ -99,70 +131,58 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* Action Controls: [Theme] [Unit (md+)] [Search] [Menu] */}
-        <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
-          {/* Day / Night Control: Desktop Full Segmented Track */}
+        {/* ======================================================== */}
+        {/* RIGHT: Desktop Controls (>= 1024px)                     */}
+        {/* Day/Night segmented track + °C/°F track + Search button */}
+        {/* ======================================================== */}
+        <div className="hidden lg:flex items-center gap-2 xl:gap-2.5 shrink-0">
+          {/* Day / Night Segmented Control */}
           <div
-            className="apple-segmented-track hidden sm:inline-flex"
+            className="apple-segmented-track"
             role="radiogroup"
             aria-label="Day and Night Theme Switcher"
           >
             <button
               type="button"
               onClick={() => !isLight && toggleTheme()}
-              className={`apple-segmented-item ${isLight ? "active" : ""}`}
+              className={`apple-segmented-item !px-3 !py-1 ${isLight ? "active" : ""}`}
               aria-checked={isLight}
               role="radio"
               title="Switch to Day Mode"
             >
               <Sun size={13} className={isLight ? "text-[#FFF9F2]" : "text-[var(--text-muted)]"} />
-              <span>Day</span>
+              <span className="text-[12px]">Day</span>
             </button>
             <button
               type="button"
               onClick={() => isLight && toggleTheme()}
-              className={`apple-segmented-item ${!isLight ? "active" : ""}`}
+              className={`apple-segmented-item !px-3 !py-1 ${!isLight ? "active" : ""}`}
               aria-checked={!isLight}
               role="radio"
               title="Switch to Night Mode"
             >
               <Moon size={13} className={!isLight ? "text-[#8E8AFF]" : "text-[var(--text-muted)]"} />
-              <span>Night</span>
+              <span className="text-[12px]">Night</span>
             </button>
           </div>
 
-          {/* Day / Night Control: Mobile Compact One-Touch Toggle */}
-          <button
-            type="button"
-            onClick={toggleTheme}
-            className="sm:hidden min-w-[44px] min-h-[44px] w-11 h-11 rounded-full border border-[var(--border-subtle)] bg-[var(--surface-card)] text-[var(--text-primary)] flex items-center justify-center hover:border-[var(--accent-primary)] transition shadow-2xs"
-            title={isLight ? "Switch to Night Mode" : "Switch to Day Mode"}
-            aria-label="Toggle Day and Night theme"
-          >
-            {isLight ? (
-              <Sun size={16} className="text-[#7A4F35]" />
-            ) : (
-              <Moon size={16} className="text-[#8E8AFF]" />
-            )}
-          </button>
-
-          {/* Unit Toggle (°C / °F) - visible on md+ */}
+          {/* Unit Switcher (°C / °F) */}
           <div
-            className="apple-segmented-track hidden md:inline-flex"
+            className="apple-segmented-track"
             role="radiogroup"
             aria-label="Temperature unit selection"
           >
             <button
               type="button"
               onClick={() => unit !== "C" && toggleUnit()}
-              className={`apple-segmented-item ${unit === "C" ? "active" : ""}`}
+              className={`apple-segmented-item !px-2.5 !py-1 text-[12px] ${unit === "C" ? "active" : ""}`}
             >
               °C
             </button>
             <button
               type="button"
               onClick={() => unit !== "F" && toggleUnit()}
-              className={`apple-segmented-item ${unit === "F" ? "active" : ""}`}
+              className={`apple-segmented-item !px-2.5 !py-1 text-[12px] ${unit === "F" ? "active" : ""}`}
             >
               °F
             </button>
@@ -172,79 +192,170 @@ export default function Navbar() {
           <button
             type="button"
             onClick={() => setIsSearchOpen(true)}
-            className="min-h-[44px] h-11 px-3 sm:px-4 rounded-full border border-[var(--border-subtle)] bg-[var(--surface-card)] text-[var(--text-primary)] text-xs font-medium flex items-center gap-1.5 sm:gap-2 hover:border-[var(--accent-primary)] transition shadow-2xs"
+            className="h-9 px-3 rounded-full border border-[var(--border-subtle)] bg-[var(--surface-card)] text-[var(--text-primary)] text-xs font-medium flex items-center gap-1.5 hover:border-[var(--accent-primary)] transition shadow-2xs"
             title="Search city (⌘K)"
           >
             <Search size={14} className={isLight ? "text-[#7A4F35]" : "text-[#8E8AFF]"} />
-            <span className="hidden sm:inline">Search</span>
-            <kbd className="hidden lg:inline-block px-1.5 py-0.5 rounded text-[10px] font-mono bg-black/5 dark:bg-white/10 text-[var(--text-muted)]">
+            <span>Search</span>
+            <kbd className="hidden xl:inline-block px-1.5 py-0.5 rounded text-[10px] font-mono bg-black/5 dark:bg-white/10 text-[var(--text-muted)]">
               ⌘K
             </kbd>
           </button>
+        </div>
 
-          {/* Mobile Menu Hamburger */}
+        {/* ======================================================== */}
+        {/* RIGHT: Tablet & Mobile Controls (< 1024px)              */}
+        {/* ONLY Day/Night toggle + Hamburger button               */}
+        {/* NO desktop links, NO search/unit buttons in top row     */}
+        {/* ======================================================== */}
+        <div className="flex lg:hidden items-center gap-2 shrink-0">
+          {/* Day / Night Segmented Control on Tablet (>= 640px to < 1024px) */}
+          <div
+            className="apple-segmented-track hidden sm:inline-flex"
+            role="radiogroup"
+            aria-label="Day and Night Theme Switcher"
+          >
+            <button
+              type="button"
+              onClick={() => !isLight && toggleTheme()}
+              className={`apple-segmented-item !px-3 !py-1.5 ${isLight ? "active" : ""}`}
+              aria-checked={isLight}
+              role="radio"
+              title="Switch to Day Mode"
+            >
+              <Sun size={13} className={isLight ? "text-[#FFF9F2]" : "text-[var(--text-muted)]"} />
+              <span className="text-[12px]">Day</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => isLight && toggleTheme()}
+              className={`apple-segmented-item !px-3 !py-1.5 ${!isLight ? "active" : ""}`}
+              aria-checked={!isLight}
+              role="radio"
+              title="Switch to Night Mode"
+            >
+              <Moon size={13} className={!isLight ? "text-[#8E8AFF]" : "text-[var(--text-muted)]"} />
+              <span className="text-[12px]">Night</span>
+            </button>
+          </div>
+
+          {/* Compact 44px One-Touch Day / Night Button for Mobile (< 640px) */}
+          <button
+            type="button"
+            onClick={toggleTheme}
+            className="sm:hidden min-w-[44px] min-h-[44px] w-11 h-11 rounded-full border border-[var(--border-subtle)] bg-[var(--surface-card)] text-[var(--text-primary)] flex items-center justify-center hover:border-[var(--accent-primary)] transition shadow-2xs active:scale-95"
+            title={isLight ? "Switch to Night Mode" : "Switch to Day Mode"}
+            aria-label="Toggle Day and Night theme"
+          >
+            {isLight ? (
+              <Sun size={17} className="text-[#7A4F35]" />
+            ) : (
+              <Moon size={17} className="text-[#8E8AFF]" />
+            )}
+          </button>
+
+          {/* Hamburger / Menu Toggle Button (Min 44px Touch Target) */}
           <button
             type="button"
             onClick={() => setMobileMenuOpen((prev) => !prev)}
-            className="xl:hidden min-w-[44px] min-h-[44px] w-11 h-11 rounded-2xl text-[var(--text-primary)] hover:bg-black/5 dark:hover:bg-white/10 flex items-center justify-center transition border border-[var(--border-subtle)] bg-[var(--surface-card)]"
-            aria-label="Toggle navigation drawer"
+            className="min-w-[44px] min-h-[44px] w-11 h-11 rounded-2xl text-[var(--text-primary)] hover:bg-black/5 dark:hover:bg-white/10 flex items-center justify-center transition border border-[var(--border-subtle)] bg-[var(--surface-card)] active:scale-95 shadow-2xs"
+            aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-navigation-drawer"
           >
             {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
       </div>
 
-      {/* Apple-Style Navigation Sheet for Tablet & Mobile */}
+      {/* ======================================================== */}
+      {/* Apple-Style Navigation Sheet for Tablet & Mobile        */}
+      {/* Contains: Search, °C/°F, Day/Night, and all 8 Nav Links */}
+      {/* ======================================================== */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.2 }}
-            className="xl:hidden mt-2 p-4 sm:p-5 rounded-3xl apple-card relative z-50 shadow-xl"
+            id="mobile-navigation-drawer"
+            initial={{ opacity: 0, y: -10, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.98 }}
+            transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:hidden mt-2 p-4 sm:p-5 rounded-3xl apple-card relative z-50 shadow-2xl border border-[var(--border-elevated)] overflow-hidden"
           >
-            <div className="flex flex-wrap items-center justify-between gap-3 pb-3 mb-3 border-b border-[var(--border-subtle)]">
-              <span className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
-                Navigation & Units
+            {/* 1. Integrated Search Button in Menu */}
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                setIsSearchOpen(true);
+              }}
+              className="w-full min-h-[46px] h-12 px-3.5 sm:px-4 rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface-card-secondary)] hover:border-[var(--accent-primary)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] flex items-center justify-between transition-all group shadow-2xs mb-3.5"
+            >
+              <div className="flex items-center gap-2.5">
+                <Search size={16} className={isLight ? "text-[#7A4F35]" : "text-[#8E8AFF]"} />
+                <span className="text-xs sm:text-sm font-medium">Search any global city or airport...</span>
+              </div>
+              <kbd className="px-2 py-0.5 text-[10px] font-mono rounded bg-black/5 dark:bg-white/10 text-[var(--text-muted)] border border-[var(--border-subtle)]">
+                ⌘K
+              </kbd>
+            </button>
+
+            {/* 2. Controls Row: Units & Day/Night Toggle */}
+            <div className="flex flex-wrap items-center justify-between gap-2.5 pb-3 mb-3.5 border-b border-[var(--border-subtle)]">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-[var(--text-muted)]">
+                Preferences
               </span>
               <div className="flex items-center gap-2">
-                <div className="apple-segmented-track" role="radiogroup" aria-label="Theme switcher">
-                  <button
-                    type="button"
-                    onClick={() => !isLight && toggleTheme()}
-                    className={`apple-segmented-item ${isLight ? "active" : ""}`}
-                  >
-                    <Sun size={12} /> Day
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => isLight && toggleTheme()}
-                    className={`apple-segmented-item ${!isLight ? "active" : ""}`}
-                  >
-                    <Moon size={12} /> Night
-                  </button>
-                </div>
-                <div className="apple-segmented-track md:hidden" role="radiogroup" aria-label="Unit switcher">
+                {/* Temperature Unit Control */}
+                <div
+                  className="apple-segmented-track"
+                  role="radiogroup"
+                  aria-label="Temperature unit selection"
+                >
                   <button
                     type="button"
                     onClick={() => unit !== "C" && toggleUnit()}
-                    className={`apple-segmented-item ${unit === "C" ? "active" : ""}`}
+                    className={`apple-segmented-item !min-h-[38px] !px-3.5 ${unit === "C" ? "active" : ""}`}
                   >
                     °C
                   </button>
                   <button
                     type="button"
                     onClick={() => unit !== "F" && toggleUnit()}
-                    className={`apple-segmented-item ${unit === "F" ? "active" : ""}`}
+                    className={`apple-segmented-item !min-h-[38px] !px-3.5 ${unit === "F" ? "active" : ""}`}
                   >
                     °F
+                  </button>
+                </div>
+
+                {/* Day / Night Theme Control */}
+                <div
+                  className="apple-segmented-track"
+                  role="radiogroup"
+                  aria-label="Theme switcher"
+                >
+                  <button
+                    type="button"
+                    onClick={() => !isLight && toggleTheme()}
+                    className={`apple-segmented-item !min-h-[38px] !px-3 ${isLight ? "active" : ""}`}
+                  >
+                    <Sun size={12} className={isLight ? "text-[#FFF9F2]" : ""} />
+                    <span className="ml-1 text-[12px]">Day</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => isLight && toggleTheme()}
+                    className={`apple-segmented-item !min-h-[38px] !px-3 ${!isLight ? "active" : ""}`}
+                  >
+                    <Moon size={12} className={!isLight ? "text-[#8E8AFF]" : ""} />
+                    <span className="ml-1 text-[12px]">Night</span>
                   </button>
                 </div>
               </div>
             </div>
 
-            <nav className="grid grid-cols-2 gap-2">
+            {/* 3. Navigation Links (8 Clean Touch-Friendly items) */}
+            <nav className="grid grid-cols-2 gap-2" aria-label="Mobile and Tablet navigation">
               {navLinks.map((link) => {
                 const Icon = link.icon;
                 return (
@@ -254,19 +365,31 @@ export default function Navbar() {
                     end={link.exact}
                     onClick={() => setMobileMenuOpen(false)}
                     className={({ isActive }) =>
-                      `min-h-[44px] px-3 rounded-2xl text-[13px] font-medium flex items-center gap-2.5 transition-all border ${
+                      `min-h-[46px] px-3.5 rounded-2xl text-[13px] font-medium flex items-center gap-2.5 transition-all border ${
                         isActive
-                          ? "bg-[var(--accent-primary)] text-[#FFF9F2] dark:bg-white dark:text-black border-[var(--accent-primary)] font-semibold shadow-xs"
-                          : "bg-black/[0.02] dark:bg-white/[0.02] border-[var(--border-subtle)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                          ? isLight
+                            ? "bg-[#7A4F35] text-[#FFF9F2] border-[#7A4F35] font-semibold shadow-xs"
+                            : "bg-white text-black border-white font-semibold shadow-xs"
+                          : "bg-[var(--surface-card)] border-[var(--border-subtle)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--accent-primary)]/40 hover:bg-black/5 dark:hover:bg-white/5"
                       }`
                     }
                   >
-                    <Icon size={15} />
+                    <Icon size={16} className="shrink-0" />
                     <span className="truncate">{link.label}</span>
                   </NavLink>
                 );
               })}
             </nav>
+
+            {/* 4. Active City Status Footer */}
+            {city && (
+              <div className="mt-3.5 pt-2.5 border-t border-[var(--border-subtle)] flex items-center justify-between text-[11px] text-[var(--text-muted)]">
+                <span className="truncate">
+                  Location: <strong className="text-[var(--text-primary)] font-medium">{city}</strong>
+                </span>
+                <span className="shrink-0">{formattedTime}</span>
+              </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

@@ -1,11 +1,8 @@
 const { GoogleGenAI } = require("@google/genai");
 
-
 const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY,
 });
-
-
 
 const getWeatherAdvice = async (req, res) => {
 
@@ -33,30 +30,30 @@ const getWeatherAdvice = async (req, res) => {
 
 
     const prompt = `
-You are a professional AI Weather Assistant.
+      You are a professional AI Weather Assistant.
 
-Weather Details:
+      Weather Details:
 
-City: ${city}
-Temperature: ${temperature}°C
-Feels Like: ${feelsLike ?? temperature}°C
-Humidity: ${humidity}%
-Wind Speed: ${wind} km/h
-Condition: ${condition}
-
-
-Give a short and professional weather report.
-
-Include:
-
-- Overall weather summary
-- Clothing recommendation
-- Whether to carry an umbrella
-- Outdoor activity suggestion
-- Health & safety advice
+      City: ${city}
+      Temperature: ${temperature}°C
+      Feels Like: ${feelsLike ?? temperature}°C
+      Humidity: ${humidity}%
+      Wind Speed: ${wind} km/h
+      Condition: ${condition}
 
 
-Keep the response under 120 words.
+      Give a short and professional weather report.
+
+      Include:
+
+      - Overall weather summary
+      - Clothing recommendation
+      - Whether to carry an umbrella
+      - Outdoor activity suggestion
+      - Health & safety advice
+
+
+      Keep the response under 120 words.
 `;
 
 
