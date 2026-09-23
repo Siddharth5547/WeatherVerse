@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useMemo } from "react";
 import gsap from "gsap";
 import { useWeather } from "../context/WeatherContext";
 
-export default function WeatherEnvironment({ condition = "", sunrise, sunset }) {
+export default function WeatherEnvironment({ condition = "", sunrise: _sunrise, sunset: _sunset }) {
   const { theme } = useWeather();
   const containerRef = useRef(null);
   const cond = (condition || "").toLowerCase();
@@ -21,6 +21,12 @@ export default function WeatherEnvironment({ condition = "", sunrise, sunset }) 
 
   // GSAP animation engine & smooth Night <-> Day transition
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) {
+      gsap.set(".env-base-canvas", { backgroundColor: isDark ? "#000000" : "#F3E9DC" });
+      return;
+    }
+
     const ctx = gsap.context(() => {
       // 1. Atmosphere Transition (0.8s smooth transition between night & day)
       gsap.to(".env-base-canvas", {
@@ -54,17 +60,19 @@ export default function WeatherEnvironment({ condition = "", sunrise, sunset }) 
       // 3. Condition-specific GSAP Timelines
       if (weatherType === "sunny") {
         // Sun glow breathing
-        gsap.to(".env-sun-disc", {
-          scale: 1.08,
-          opacity: isDark ? 0.38 : 0.82,
-          duration: 4,
-          repeat: -1,
-          yoyo: true,
-          ease: "power1.inOut",
-        });
+        if (containerRef.current?.querySelector(".env-sun-disc")) {
+          gsap.to(".env-sun-disc", {
+            scale: 1.08,
+            opacity: isDark ? 0.38 : 0.82,
+            duration: 4,
+            repeat: -1,
+            yoyo: true,
+            ease: "power1.inOut",
+          });
+        }
 
         // Floating solar motes
-        const motes = gsap.utils.toArray(".env-solar-mote");
+        const motes = gsap.utils.toArray(".env-solar-mote", containerRef.current);
         motes.forEach((mote, i) => {
           gsap.to(mote, {
             y: "-=55",
@@ -80,23 +88,27 @@ export default function WeatherEnvironment({ condition = "", sunrise, sunset }) 
       }
 
       if (weatherType === "cloudy") {
-        gsap.to(".env-cloud-layer-1", {
-          x: "100vw",
-          duration: 55,
-          repeat: -1,
-          ease: "none",
-        });
-        gsap.to(".env-cloud-layer-2", {
-          x: "100vw",
-          duration: 38,
-          repeat: -1,
-          ease: "none",
-          delay: 4,
-        });
+        if (containerRef.current?.querySelector(".env-cloud-layer-1")) {
+          gsap.to(".env-cloud-layer-1", {
+            x: "100vw",
+            duration: 55,
+            repeat: -1,
+            ease: "none",
+          });
+        }
+        if (containerRef.current?.querySelector(".env-cloud-layer-2")) {
+          gsap.to(".env-cloud-layer-2", {
+            x: "100vw",
+            duration: 38,
+            repeat: -1,
+            ease: "none",
+            delay: 4,
+          });
+        }
       }
 
       if (weatherType === "rain" || weatherType === "storm") {
-        const drops = gsap.utils.toArray(".env-rain-drop");
+        const drops = gsap.utils.toArray(".env-rain-drop", containerRef.current);
         drops.forEach((drop, i) => {
           gsap.fromTo(
             drop,
@@ -114,16 +126,18 @@ export default function WeatherEnvironment({ condition = "", sunrise, sunset }) 
       }
 
       if (weatherType === "storm") {
-        const flashTL = gsap.timeline({ repeat: -1, repeatDelay: 6 });
-        flashTL
-          .to(".env-lightning-flash", { opacity: 0.6, duration: 0.06, ease: "power4.in" })
-          .to(".env-lightning-flash", { opacity: 0.1, duration: 0.04 })
-          .to(".env-lightning-flash", { opacity: 0.8, duration: 0.08, ease: "power4.out" })
-          .to(".env-lightning-flash", { opacity: 0, duration: 0.35, ease: "power2.out" });
+        if (containerRef.current?.querySelector(".env-lightning-flash")) {
+          const flashTL = gsap.timeline({ repeat: -1, repeatDelay: 6 });
+          flashTL
+            .to(".env-lightning-flash", { opacity: 0.6, duration: 0.06, ease: "power4.in" })
+            .to(".env-lightning-flash", { opacity: 0.1, duration: 0.04 })
+            .to(".env-lightning-flash", { opacity: 0.8, duration: 0.08, ease: "power4.out" })
+            .to(".env-lightning-flash", { opacity: 0, duration: 0.35, ease: "power2.out" });
+        }
       }
 
       if (weatherType === "snow") {
-        const flakes = gsap.utils.toArray(".env-snow-flake");
+        const flakes = gsap.utils.toArray(".env-snow-flake", containerRef.current);
         flakes.forEach((flake, i) => {
           gsap.fromTo(
             flake,
@@ -142,14 +156,16 @@ export default function WeatherEnvironment({ condition = "", sunrise, sunset }) 
       }
 
       if (weatherType === "fog") {
-        gsap.to(".env-fog-layer", {
-          x: "random(-50, 50)",
-          opacity: isDark ? 0.35 : 0.55,
-          duration: 10,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-        });
+        if (containerRef.current?.querySelector(".env-fog-layer")) {
+          gsap.to(".env-fog-layer", {
+            x: "random(-50, 50)",
+            opacity: isDark ? 0.35 : 0.55,
+            duration: 10,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+          });
+        }
       }
     }, containerRef);
 

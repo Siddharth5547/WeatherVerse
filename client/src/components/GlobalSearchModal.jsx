@@ -6,7 +6,7 @@ import { useWeather } from "../context/WeatherContext";
 const POPULAR_CITIES = ["London", "Tokyo", "New York", "Paris", "Dubai", "Mumbai", "Sydney", "Singapore"];
 
 export default function GlobalSearchModal() {
-  const { isSearchOpen, setIsSearchOpen, searchCity, searchCoords, loading, theme } = useWeather();
+  const { isSearchOpen, setIsSearchOpen, searchCity, searchCoords, loading } = useWeather();
   const [query, setQuery] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [speechError, setSpeechError] = useState("");
@@ -159,7 +159,7 @@ export default function GlobalSearchModal() {
           </div>
 
           {/* Search Input Bar */}
-          <div className="mt-3 sm:mt-4 flex items-center gap-1.5 sm:gap-2 h-12 sm:h-14 px-2.5 sm:px-3 rounded-2xl border border-[var(--border-elevated)] bg-[var(--surface-card)] focus-within:border-[var(--accent-primary)] focus-within:ring-4 focus-within:ring-[#7A4F35]/15 transition-all shadow-xs">
+          <div className="mt-3 sm:mt-4 flex items-center gap-1.5 sm:gap-2 h-[52px] sm:h-[56px] min-h-[52px] px-2.5 sm:px-3 rounded-2xl border border-[var(--border-elevated)] bg-[var(--surface-card)] focus-within:border-[var(--accent-primary)] focus-within:ring-4 focus-within:ring-[#7A4F35]/15 transition-all shadow-xs">
             <Search size={18} className="text-[var(--accent-primary)] dark:text-[#8E8AFF] ml-1 shrink-0" />
             <input
               type="text"
@@ -173,24 +173,26 @@ export default function GlobalSearchModal() {
             {query && (
               <button
                 onClick={() => setQuery("")}
-                className="p-1 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition"
+                className="min-w-[36px] min-h-[36px] flex items-center justify-center p-1 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition"
+                aria-label="Clear search input"
               >
                 <X size={15} />
               </button>
             )}
             <button
               onClick={startVoiceSearch}
-              className={`p-1.5 sm:p-2 rounded-xl transition ${
+              className={`min-w-[40px] min-h-[40px] flex items-center justify-center p-1.5 sm:p-2 rounded-xl transition ${
                 isListening ? "bg-rose-500 text-white animate-pulse" : "text-[var(--text-muted)] hover:text-[var(--accent-primary)]"
               }`}
               title="Voice Search"
+              aria-label="Voice Search"
             >
               {isListening ? <MicOff size={16} /> : <Mic size={16} />}
             </button>
             <button
               onClick={() => handleSubmit()}
               disabled={loading || !query.trim()}
-              className="apple-btn-primary px-3 sm:px-4 py-1.5 sm:py-2 text-xs font-semibold shrink-0"
+              className="apple-btn-primary min-h-[40px] px-3.5 sm:px-4 py-1.5 sm:py-2 text-xs font-semibold shrink-0"
             >
               {loading ? "..." : "Search"}
             </button>

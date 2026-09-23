@@ -82,7 +82,8 @@
 .day-hero-gradient {
   background: linear-gradient(135deg, #F3E9DC 0%, #E8D5C0 55%, #DCC6B2 100%);
   border: 1px solid #D8C5B3;
-  box-shadow: 0 16px 40px rgba(74, 47, 31, 0.12);
+  box-shadow: 0 14px 35px rgba(74, 47, 31, 0.10);
+  transition: background 0.7s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s ease, box-shadow 0.5s ease;
 }
 
 [data-theme="dark"] .day-hero-gradient,
@@ -90,6 +91,40 @@
   background: #1C1C1E;
   border: 1px solid #38383A;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.50);
+}
+
+/* Compact Premium Hero Container */
+.hero-compact-container {
+  width: 100%;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  min-height: min(460px, 75vh);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+@media (min-width: 1024px) {
+  .hero-compact-container {
+    max-height: 600px;
+    min-height: 480px;
+  }
+}
+
+/* Telemetry Micro-Pill Hover */
+.telemetry-pill-hover {
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.22s ease;
+}
+
+.telemetry-pill-hover:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 6px 16px rgba(74, 47, 31, 0.12);
+}
+
+[data-theme="dark"] .telemetry-pill-hover:hover,
+.dark .telemetry-pill-hover:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
 }
 
 /* Weather Character Aura & Container in Day Mode */

@@ -1,23 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
 import {
-  MapPin,
-  Droplets,
-  Wind,
   Calendar,
   Activity,
   Clock,
   HeartPulse,
   Bot,
-  Sunrise,
   ArrowUpRight,
-  Bookmark,
-  BookmarkCheck,
 } from "lucide-react";
 import { useWeather } from "../context/WeatherContext";
-import { convertTemp, convertWind } from "../Services/WeatherService";
+import { convertTemp } from "../Services/WeatherService";
 import SkeletonLoader from "../components/SkeletonLoader";
+import WeatherHero from "../components/WeatherHero";
 
 export default function HomePage() {
   const { weather, loading, error, unit, theme, setIsSearchOpen, isSaved, toggleSaveLocation } = useWeather();
@@ -45,37 +39,10 @@ export default function HomePage() {
   const {
     city,
     temperature,
-    feelsLike,
     condition,
-    description,
-    humidity,
-    wind,
-    sunrise,
     icon,
-    forecast = [],
     hourly = [],
   } = weather;
-
-  const isLight = theme === "light";
-  const tempDisplay = convertTemp(temperature, unit);
-  const feelsLikeDisplay = convertTemp(feelsLike, unit);
-
-  // Compute daily high and low from forecast or hourly
-  const todayForecast = forecast[0] || {};
-  const highTemp = todayForecast.maxTemp !== undefined ? convertTemp(todayForecast.maxTemp, unit) : Math.round(Number(tempDisplay) + 3);
-  const lowTemp = todayForecast.minTemp !== undefined ? convertTemp(todayForecast.minTemp, unit) : Math.round(Number(tempDisplay) - 4);
-
-  // Mood determination
-  const getMood = (condText) => {
-    const c = (condText || "").toLowerCase();
-    if (c.includes("rain") || c.includes("drizzle")) return { mood: "Calm & Cozy", desc: "Gentle precipitation" };
-    if (c.includes("thunder") || c.includes("storm")) return { mood: "Electrifying", desc: "Convective storm" };
-    if (c.includes("snow") || c.includes("blizzard")) return { mood: "Crisp & Serene", desc: "Crystalline snowfall" };
-    if (c.includes("cloud") || c.includes("overcast")) return { mood: "Diffused & Mellow", desc: "Soft ambient cloud cover" };
-    return { mood: "Bright & Radiant", desc: "Full daylight illumination" };
-  };
-
-  const currentMood = getMood(condition);
 
   // Day timeline progression segments
   const daySegments = [
@@ -115,101 +82,14 @@ export default function HomePage() {
 
   return (
     <div className="space-y-6 sm:space-y-8 pb-16 pt-2">
-      {/* 1. WeatherVerse Hero Section (Warm Daylight Gradient in Day, OLED Black in Night) */}
-      <motion.section
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-        className="day-hero-gradient relative overflow-hidden p-5 sm:p-8 md:p-12 text-center rounded-[24px] sm:rounded-[28px]"
-      >
-        {/* Top Floating Badge Bar */}
-        <div className="flex flex-wrap items-center justify-between gap-2.5 sm:gap-3 mb-4 sm:mb-6">
-          <div className="flex items-center gap-1.5 sm:gap-2">
-            <span className="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] dark:text-[#8E8AFF] border border-[var(--accent-primary)]/20">
-              <MapPin size={11} /> Live Station
-            </span>
-            <span className="hidden sm:inline-flex items-center px-3 py-1 rounded-full text-xs font-medium text-[var(--text-secondary)] bg-[var(--surface-card)]/80 border border-[var(--border-subtle)]">
-              {currentMood.mood} • {currentMood.desc}
-            </span>
-          </div>
-
-          <button
-            onClick={() => toggleSaveLocation(weather)}
-            className={`inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-semibold border transition-all ${
-              isSaved(city)
-                ? "bg-[#D9B77A]/30 text-[#7A4F35] dark:text-[#FFD60A] border-[#D9B77A]"
-                : "bg-[var(--surface-card)] text-[var(--text-secondary)] border-[var(--border-subtle)] hover:text-[var(--text-primary)] hover:border-[var(--accent-primary)]"
-            }`}
-          >
-            {isSaved(city) ? <BookmarkCheck size={13} /> : <Bookmark size={13} />}
-            {isSaved(city) ? "Bookmarked" : "Save Location"}
-          </button>
-        </div>
-
-        {/* Hero Visuals & Typography */}
-        <div className="max-w-2xl mx-auto flex flex-col items-center">
-          {/* Weather Character / Icon with Warm Daylight Aura Separation */}
-          <div className="relative mb-1 sm:mb-2 flex items-center justify-center">
-            <div className="absolute w-32 h-32 sm:w-44 sm:h-44 md:w-48 md:h-48 rounded-full character-aura-day pointer-events-none" />
-            <motion.div
-              animate={{ y: [0, -6, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="relative z-10"
-            >
-              <img
-                src={icon}
-                alt={condition}
-                className="w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 object-contain weather-character-badge"
-              />
-            </motion.div>
-          </div>
-
-          {/* City Name (Espresso Brown #2E2118 in Day, White #F5F5F7 in Night) */}
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-[var(--text-primary)]">
-            {city}
-          </h1>
-
-          {/* Giant Hero Temperature */}
-          <div className="my-1 sm:my-2 flex items-baseline justify-center">
-            <span className="text-[72px] sm:text-[96px] md:text-[124px] font-medium tracking-tighter leading-none text-[var(--text-primary)]">
-              {tempDisplay}
-            </span>
-            <span className="text-2xl sm:text-4xl md:text-5xl font-light text-[var(--accent-primary)] dark:text-[#8E8AFF] ml-1">
-              °{unit}
-            </span>
-          </div>
-
-          {/* Weather Condition (Coffee Brown #7A4F35 in Day, Lavender #8E8AFF in Night) */}
-          <p className="text-lg sm:text-xl md:text-2xl font-semibold text-[var(--accent-primary)] dark:text-[#8E8AFF] mb-1.5 sm:mb-2">
-            {condition || description}
-          </p>
-
-          {/* Diurnal Pill: High / Low / Feels Like */}
-          <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-3 text-xs sm:text-sm font-medium text-[var(--text-secondary)]">
-            <span>H: <strong className="text-[var(--text-primary)]">{highTemp}°{unit}</strong></span>
-            <span className="opacity-40">•</span>
-            <span>L: <strong className="text-[var(--text-primary)]">{lowTemp}°{unit}</strong></span>
-            <span className="opacity-40">•</span>
-            <span>Feels like <strong className="text-[var(--text-primary)]">{feelsLikeDisplay}°{unit}</strong></span>
-          </div>
-
-          {/* Quick Telemetry Pills */}
-          <div className="grid grid-cols-3 gap-1.5 sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-3 mt-5 sm:mt-6 pt-5 sm:pt-6 border-t border-[var(--border-subtle)] w-full text-[11px] sm:text-xs font-semibold text-[var(--text-secondary)]">
-            <div className="flex items-center justify-center gap-1 sm:gap-1.5 px-2 sm:px-3.5 py-1.5 rounded-full bg-[var(--surface-card)] border border-[var(--border-subtle)] shadow-2xs">
-              <Droplets size={13} className="text-[#8EB7C9] shrink-0" />
-              <span className="text-[var(--text-primary)] truncate">{humidity}% <span className="hidden sm:inline">Humidity</span></span>
-            </div>
-            <div className="flex items-center justify-center gap-1 sm:gap-1.5 px-2 sm:px-3.5 py-1.5 rounded-full bg-[var(--surface-card)] border border-[var(--border-subtle)] shadow-2xs">
-              <Wind size={13} className="text-[#8EAD91] shrink-0" />
-              <span className="text-[var(--text-primary)] truncate">{convertWind(wind, unit)}</span>
-            </div>
-            <div className="flex items-center justify-center gap-1 sm:gap-1.5 px-2 sm:px-3.5 py-1.5 rounded-full bg-[var(--surface-card)] border border-[var(--border-subtle)] shadow-2xs">
-              <Sunrise size={13} className="text-[#D9B77A] shrink-0" />
-              <span className="text-[var(--text-primary)] truncate">{sunrise || "06:12 AM"}</span>
-            </div>
-          </div>
-        </div>
-      </motion.section>
+      {/* 1. Compact WeatherVerse Hero Section */}
+      <WeatherHero
+        weather={weather}
+        unit={unit}
+        theme={theme}
+        isSaved={isSaved}
+        toggleSaveLocation={toggleSaveLocation}
+      />
 
       {/* 2. 24-Hour Horizontal Scrubber Strip */}
       {hourly && hourly.length > 0 && (

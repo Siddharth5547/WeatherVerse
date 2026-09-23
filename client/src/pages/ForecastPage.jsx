@@ -141,14 +141,16 @@ export default function ForecastPage() {
                   </span>
                 </div>
 
-                <div className="flex items-center justify-between text-[11px] mt-1 font-medium">
+                <div className="flex items-center justify-between text-[10px] sm:text-[11px] mt-1.5 font-medium pt-1 border-t border-black/5 dark:border-white/5">
                   <span className={`flex items-center gap-0.5 ${
                     isSelected && isLight ? "text-[#D9B77A]" : "text-[#8EB7C9]"
-                  }`}>
-                    <CloudRain size={11} /> {item.rainProb}%
+                  }`} title="Precipitation Probability">
+                    <CloudRain size={11} className="shrink-0" /> {item.rainProb}%
                   </span>
-                  <span className={isSelected && isLight ? "text-[#E9D8C5]" : "text-[var(--text-muted)]"}>
-                    {item.humidity}%
+                  <span className={`flex items-center gap-0.5 ${
+                    isSelected && isLight ? "text-[#E9D8C5]" : "text-[#8EAD91]"
+                  }`} title="Wind Velocity">
+                    <Wind size={10} className="shrink-0" /> {convertWind(item.windSpeed, unit)}
                   </span>
                 </div>
               </div>

@@ -24,7 +24,7 @@ export default function AIAssistant({
   loading,
   onRegenerate,
   onAskCustom,
-  theme = "dark",
+  theme: _theme = "dark",
   cityName = "your city",
 }) {
   const [copied, setCopied] = useState(false);

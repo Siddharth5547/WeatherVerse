@@ -1,7 +1,7 @@
 import React from "react";
 import { CloudRain, Sparkles, Cpu } from "lucide-react";
 
-export default function Footer({ theme = "dark" }) {
+export default function Footer({ theme: _theme = "dark" } = {}) {
   return (
     <footer className="w-full max-w-7xl mx-auto px-2.5 sm:px-4 mt-10 sm:mt-16 pb-8 sm:pb-12 z-20 relative">
       <div className="apple-card p-5 sm:p-8">

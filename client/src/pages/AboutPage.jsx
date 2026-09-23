@@ -10,10 +10,7 @@ import {
   Cpu,
   Globe2,
 } from "lucide-react";
-import { useWeather } from "../context/WeatherContext";
-
 export default function AboutPage() {
-  const { theme } = useWeather();
 
   const coreCapabilities = [
     {

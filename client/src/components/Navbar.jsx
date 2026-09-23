@@ -135,14 +135,14 @@ export default function Navbar() {
           <button
             type="button"
             onClick={toggleTheme}
-            className="sm:hidden w-8 h-8 rounded-full border border-[var(--border-subtle)] bg-[var(--surface-card)] text-[var(--text-primary)] flex items-center justify-center hover:border-[var(--accent-primary)] transition shadow-2xs"
+            className="sm:hidden min-w-[44px] min-h-[44px] w-11 h-11 rounded-full border border-[var(--border-subtle)] bg-[var(--surface-card)] text-[var(--text-primary)] flex items-center justify-center hover:border-[var(--accent-primary)] transition shadow-2xs"
             title={isLight ? "Switch to Night Mode" : "Switch to Day Mode"}
             aria-label="Toggle Day and Night theme"
           >
             {isLight ? (
-              <Sun size={14} className="text-[#7A4F35]" />
+              <Sun size={16} className="text-[#7A4F35]" />
             ) : (
-              <Moon size={14} className="text-[#8E8AFF]" />
+              <Moon size={16} className="text-[#8E8AFF]" />
             )}
           </button>
 
@@ -172,10 +172,10 @@ export default function Navbar() {
           <button
             type="button"
             onClick={() => setIsSearchOpen(true)}
-            className="h-8 sm:h-9 px-2.5 sm:px-3.5 rounded-full border border-[var(--border-subtle)] bg-[var(--surface-card)] text-[var(--text-primary)] text-xs font-medium flex items-center gap-1.5 sm:gap-2 hover:border-[var(--accent-primary)] transition shadow-2xs"
+            className="min-h-[44px] h-11 px-3 sm:px-4 rounded-full border border-[var(--border-subtle)] bg-[var(--surface-card)] text-[var(--text-primary)] text-xs font-medium flex items-center gap-1.5 sm:gap-2 hover:border-[var(--accent-primary)] transition shadow-2xs"
             title="Search city (⌘K)"
           >
-            <Search size={13} className={isLight ? "text-[#7A4F35]" : "text-[#8E8AFF]"} />
+            <Search size={14} className={isLight ? "text-[#7A4F35]" : "text-[#8E8AFF]"} />
             <span className="hidden sm:inline">Search</span>
             <kbd className="hidden lg:inline-block px-1.5 py-0.5 rounded text-[10px] font-mono bg-black/5 dark:bg-white/10 text-[var(--text-muted)]">
               ⌘K
@@ -186,10 +186,10 @@ export default function Navbar() {
           <button
             type="button"
             onClick={() => setMobileMenuOpen((prev) => !prev)}
-            className="xl:hidden w-8 h-8 sm:w-9 sm:h-9 rounded-xl text-[var(--text-primary)] hover:bg-black/5 dark:hover:bg-white/10 flex items-center justify-center transition"
+            className="xl:hidden min-w-[44px] min-h-[44px] w-11 h-11 rounded-2xl text-[var(--text-primary)] hover:bg-black/5 dark:hover:bg-white/10 flex items-center justify-center transition border border-[var(--border-subtle)] bg-[var(--surface-card)]"
             aria-label="Toggle navigation drawer"
           >
-            {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
       </div>

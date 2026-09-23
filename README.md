@@ -72,18 +72,18 @@ WeatherVerse/
 │   ├── public/                      # Static assets & favicon
 │   ├── src/
 │   │   ├── components/              # Reusable UI Components
-│   │   │   ├── AIAssistant.jsx      # Floating AI Copilot widget
-│   │   │   ├── AirQualityCard.jsx   # Pollutant overview card
-│   │   │   ├── BentoMetrics.jsx     # Telemetry metric grid
-│   │   │   ├── DailyForecast.jsx    # Synoptic daily cards
+│   │   │   ├── AIAssistant.jsx      # AI Copilot assistant widget
+│   │   │   ├── AQICard.jsx          # Pollutant summary card
+│   │   │   ├── AQISection.jsx       # Detailed EPA AQI breakdown
+│   │   │   ├── BentoMetrics.jsx     # Telemetry metric grid & compass
 │   │   │   ├── Footer.jsx           # Global responsive footer
+│   │   │   ├── ForecastSection.jsx  # Synoptic daily cards
 │   │   │   ├── GlobalSearchModal.jsx# Spotlight search modal (Ctrl+K)
-│   │   │   ├── HourlyForecast.jsx   # 24-hr timeline scrubber
 │   │   │   ├── Navbar.jsx           # Responsive header with drawer
-│   │   │   ├── SearchBar.jsx        # City search input & voice trigger
-│   │   │   ├── SunPathCard.jsx      # Solar dawn/dusk arc
+│   │   │   ├── SkeletonLoader.jsx   # Apple-style loading skeleton
 │   │   │   ├── TemperatureChart.jsx # Recharts area temperature curve
-│   │   │   └── WeatherCard.jsx      # Main atmospheric hero station
+│   │   │   ├── WeatherEnvironment.jsx # Living GSAP atmospheric simulation
+│   │   │   └── WeatherHero.jsx      # Compact Apple-style weather hero
 │   │   ├── context/
 │   │   │   ├── ThemeContext.jsx     # Day / Night mode state & persistence
 │   │   │   └── WeatherContext.jsx   # Global weather, geolocation, units (°C/°F)
@@ -237,9 +237,10 @@ The included `client/vercel.json` ensures all client-side routes (`/forecast`, `
 
 ## 👤 Author & Acknowledgments
 
-**Siddharth**
+**Siddharth Bharti**
 - **GitHub:** [@Siddharth5547](https://github.com/Siddharth5547)
 - **LinkedIn:** [linkedin.com/in/siddharth2004/](https://linkedin.com/in/siddharth2004/)
+- **Repository:** [https://github.com/Siddharth5547/WeatherVerse](https://github.com/Siddharth5547/WeatherVerse)
 
 ### Meteorological Data Providers
 - [WeatherAPI.com](https://www.weatherapi.com/) — Atmospheric conditions & air quality telemetry

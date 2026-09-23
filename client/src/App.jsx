@@ -52,7 +52,7 @@ function WeatherAppLayout() {
 
   return (
     <div
-      className="min-h-screen relative transition-colors duration-700 flex flex-col justify-between text-[var(--text-primary)]"
+      className="min-h-screen relative transition-colors duration-700 flex flex-col justify-between text-[var(--text-primary)] w-full max-w-[100vw] overflow-x-hidden"
     >
       {/* Living Atmospheric Simulation */}
       <WeatherEnvironment
