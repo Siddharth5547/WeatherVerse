@@ -122,7 +122,7 @@ export default function GlobalSearchModal() {
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-start justify-center pt-10 sm:pt-28 px-3 sm:px-4">
+      <div className="fixed inset-0 z-50 flex items-start justify-center pt-4 sm:pt-20 px-2.5 sm:px-4 overflow-y-auto box-border">
         {/* Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -138,7 +138,7 @@ export default function GlobalSearchModal() {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.96, y: -16 }}
           transition={{ duration: 0.2, ease: "easeOut" }}
-          className="apple-card relative w-full max-w-2xl p-4 sm:p-7 shadow-2xl z-10"
+          className="apple-card relative w-full max-w-2xl p-3.5 sm:p-7 shadow-2xl z-10 my-4 max-h-[90vh] overflow-y-auto box-border"
         >
           {/* Header */}
           <div className="flex items-center justify-between pb-2.5 sm:pb-3 border-b border-[var(--border-subtle)]">
@@ -151,7 +151,8 @@ export default function GlobalSearchModal() {
               </kbd>
               <button
                 onClick={() => setIsSearchOpen(false)}
-                className="p-1 rounded-full text-[var(--text-muted)] hover:text-[var(--text-primary)] transition"
+                className="p-1.5 rounded-full text-[var(--text-muted)] hover:text-[var(--text-primary)] transition cursor-pointer"
+                aria-label="Close search dialog"
               >
                 <X size={18} />
               </button>
@@ -159,8 +160,8 @@ export default function GlobalSearchModal() {
           </div>
 
           {/* Search Input Bar */}
-          <div className="mt-3 sm:mt-4 flex items-center gap-1.5 sm:gap-2 h-[52px] sm:h-[56px] min-h-[52px] px-2.5 sm:px-3 rounded-2xl border border-[var(--border-elevated)] bg-[var(--surface-card)] focus-within:border-[var(--accent-primary)] focus-within:ring-4 focus-within:ring-[#7A4F35]/15 transition-all shadow-xs">
-            <Search size={18} className="text-[var(--accent-primary)] dark:text-[#8E8AFF] ml-1 shrink-0" />
+          <div className="mt-3 sm:mt-4 flex items-center gap-1 sm:gap-2 h-[48px] sm:h-[56px] min-h-[48px] px-2 sm:px-3 rounded-2xl border border-[var(--border-elevated)] bg-[var(--surface-card)] focus-within:border-[var(--accent-primary)] focus-within:ring-4 focus-within:ring-[#7A4F35]/15 transition-all shadow-xs w-full box-border">
+            <Search size={18} className="text-[var(--accent-primary)] dark:text-[#8E8AFF] ml-0.5 sm:ml-1 shrink-0" />
             <input
               type="text"
               autoFocus
@@ -168,12 +169,12 @@ export default function GlobalSearchModal() {
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Search any global city..."
-              className="w-full min-w-0 py-2 px-1.5 bg-transparent text-sm sm:text-base outline-none font-medium placeholder:text-[var(--text-muted)] text-[var(--text-primary)]"
+              className="w-full min-w-0 py-2 px-1 sm:px-1.5 bg-transparent text-sm sm:text-base outline-none font-medium placeholder:text-[var(--text-muted)] text-[var(--text-primary)]"
             />
             {query && (
               <button
                 onClick={() => setQuery("")}
-                className="min-w-[36px] min-h-[36px] flex items-center justify-center p-1 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition"
+                className="min-w-[30px] min-h-[30px] flex items-center justify-center p-1 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition shrink-0 cursor-pointer"
                 aria-label="Clear search input"
               >
                 <X size={15} />
@@ -181,7 +182,7 @@ export default function GlobalSearchModal() {
             )}
             <button
               onClick={startVoiceSearch}
-              className={`min-w-[40px] min-h-[40px] flex items-center justify-center p-1.5 sm:p-2 rounded-xl transition ${
+              className={`min-w-[34px] min-h-[34px] sm:min-w-[40px] sm:min-h-[40px] flex items-center justify-center p-1 sm:p-2 rounded-xl transition shrink-0 cursor-pointer ${
                 isListening ? "bg-rose-500 text-white animate-pulse" : "text-[var(--text-muted)] hover:text-[var(--accent-primary)]"
               }`}
               title="Voice Search"
@@ -192,7 +193,7 @@ export default function GlobalSearchModal() {
             <button
               onClick={() => handleSubmit()}
               disabled={loading || !query.trim()}
-              className="apple-btn-primary min-h-[40px] px-3.5 sm:px-4 py-1.5 sm:py-2 text-xs font-semibold shrink-0"
+              className="apple-btn-primary !min-h-[36px] sm:!min-h-[40px] !px-3 sm:!px-4 !py-1 sm:!py-2 !text-xs font-semibold shrink-0 cursor-pointer disabled:opacity-50"
             >
               {loading ? "..." : "Search"}
             </button>

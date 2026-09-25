@@ -65,15 +65,19 @@ export default function Navbar() {
   const isLight = theme === "light";
 
   return (
-    <header className="sticky top-2 sm:top-4 z-40 w-full max-w-[1440px] mx-auto px-2.5 sm:px-6 mb-4 sm:mb-8">
-      <div className="apple-nav flex items-center justify-between px-3 sm:px-5 lg:px-6 py-2 sm:py-2.5 lg:py-3 rounded-[20px] sm:rounded-[24px] relative transition-all duration-500">
+    <header className="sticky top-2 sm:top-4 z-40 w-full max-w-[1440px] mx-auto px-2 sm:px-4 lg:px-6 mb-4 sm:mb-8 box-border">
+      <div className="apple-nav flex items-center justify-between px-2.5 sm:px-5 lg:px-6 py-2 sm:py-2.5 lg:py-3 rounded-[20px] sm:rounded-[24px] relative transition-all duration-500 w-full max-w-full box-border">
         
         {/* ======================================================== */}
-        {/* LEFT: Brand Logo & Title (Desktop, Tablet, Mobile)      */}
+        {/* LEFT: Brand Logo & Title (Desktop, Tablet, Mobile)       */}
         {/* ======================================================== */}
-        <Link to="/" className="flex items-center gap-2 sm:gap-2.5 shrink-0 group min-w-0">
+        <Link
+          to="/"
+          className="flex items-center gap-1.5 sm:gap-2.5 shrink min-w-0 group"
+          aria-label="WeatherVerse Home"
+        >
           <div
-            className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform ${
+            className={`w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform ${
               isLight
                 ? "bg-[#7A4F35] text-[#FFF9F2]"
                 : "bg-white text-[#111111]"
@@ -92,8 +96,8 @@ export default function Navbar() {
             </svg>
           </div>
 
-          <div className="flex flex-col min-w-0">
-            <span className="text-[15px] sm:text-[17px] font-semibold tracking-tight text-[var(--text-primary)] leading-tight truncate">
+          <div className="flex flex-col min-w-0 truncate">
+            <span className="text-[14px] sm:text-[17px] font-semibold tracking-tight text-[var(--text-primary)] leading-tight truncate">
               WeatherVerse
             </span>
             {city && (
@@ -105,7 +109,7 @@ export default function Navbar() {
         </Link>
 
         {/* ======================================================== */}
-        {/* CENTER: Desktop Navigation Links (>= 1024px ONLY)       */}
+        {/* CENTER: Desktop Navigation Links (>= 1024px ONLY)        */}
         {/* ======================================================== */}
         <nav
           className="hidden lg:flex items-center gap-0.5 xl:gap-1 p-1 rounded-full border border-[var(--border-subtle)] bg-[var(--surface-card-secondary)] shrink-0"
@@ -132,8 +136,8 @@ export default function Navbar() {
         </nav>
 
         {/* ======================================================== */}
-        {/* RIGHT: Desktop Controls (>= 1024px)                     */}
-        {/* Day/Night segmented track + °C/°F track + Search button */}
+        {/* RIGHT: Desktop Controls (>= 1024px)                      */}
+        {/* Day/Night segmented track + °C/°F track + Search button  */}
         {/* ======================================================== */}
         <div className="hidden lg:flex items-center gap-2 xl:gap-2.5 shrink-0">
           {/* Day / Night Segmented Control */}
@@ -191,9 +195,11 @@ export default function Navbar() {
           {/* Global Search Button */}
           <button
             type="button"
+            id="desktop-search-btn"
             onClick={() => setIsSearchOpen(true)}
-            className="h-9 px-3 rounded-full border border-[var(--border-subtle)] bg-[var(--surface-card)] text-[var(--text-primary)] text-xs font-medium flex items-center gap-1.5 hover:border-[var(--accent-primary)] transition shadow-2xs"
+            className="h-9 px-3 rounded-full border border-[var(--border-subtle)] bg-[var(--surface-card)] text-[var(--text-primary)] text-xs font-medium flex items-center gap-1.5 hover:border-[var(--accent-primary)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] transition shadow-2xs active:scale-95 cursor-pointer"
             title="Search city (⌘K)"
+            aria-label="Search city"
           >
             <Search size={14} className={isLight ? "text-[#7A4F35]" : "text-[#8E8AFF]"} />
             <span>Search</span>
@@ -204,14 +210,29 @@ export default function Navbar() {
         </div>
 
         {/* ======================================================== */}
-        {/* RIGHT: Tablet & Mobile Controls (< 1024px)              */}
-        {/* ONLY Day/Night toggle + Hamburger button               */}
-        {/* NO desktop links, NO search/unit buttons in top row     */}
+        {/* RIGHT: Tablet Controls (768px <= width < 1024px)         */}
+        {/* Structure: [Search] [Day/Night] [Hamburger]              */}
         {/* ======================================================== */}
-        <div className="flex lg:hidden items-center gap-2 shrink-0">
-          {/* Day / Night Segmented Control on Tablet (>= 640px to < 1024px) */}
+        <div className="hidden md:flex lg:hidden items-center gap-2 shrink-0">
+          {/* Visible Tablet Search Button */}
+          <button
+            type="button"
+            id="tablet-search-btn"
+            onClick={() => setIsSearchOpen(true)}
+            className="h-10 px-3.5 rounded-full border border-[var(--border-subtle)] bg-[var(--surface-card)] text-[var(--text-primary)] text-xs font-medium flex items-center gap-1.5 hover:border-[var(--accent-primary)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] transition shadow-2xs active:scale-95 shrink-0 cursor-pointer"
+            title="Search city (⌘K)"
+            aria-label="Search city"
+          >
+            <Search size={15} className={isLight ? "text-[#7A4F35]" : "text-[#8E8AFF]"} />
+            <span>Search</span>
+            <kbd className="px-1.5 py-0.5 rounded text-[10px] font-mono bg-black/5 dark:bg-white/10 text-[var(--text-muted)]">
+              ⌘K
+            </kbd>
+          </button>
+
+          {/* Day / Night Segmented Control */}
           <div
-            className="apple-segmented-track hidden sm:inline-flex"
+            className="apple-segmented-track"
             role="radiogroup"
             aria-label="Day and Night Theme Switcher"
           >
@@ -239,11 +260,32 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* Compact 44px One-Touch Day / Night Button for Mobile (< 640px) */}
+          {/* Hamburger / Menu Toggle Button */}
           <button
             type="button"
+            id="tablet-menu-btn"
+            onClick={() => setMobileMenuOpen((prev) => !prev)}
+            className="min-w-[44px] min-h-[44px] w-11 h-11 rounded-2xl text-[var(--text-primary)] hover:bg-black/5 dark:hover:bg-white/10 flex items-center justify-center transition border border-[var(--border-subtle)] bg-[var(--surface-card)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] active:scale-95 shadow-2xs shrink-0 cursor-pointer"
+            aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-navigation-drawer"
+          >
+            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
+
+        {/* ======================================================== */}
+        {/* RIGHT: Mobile Controls (< 768px)                         */}
+        {/* Mandatory Structure: [Day/Night] [Search] [Hamburger]     */}
+        {/* Search is ALWAYS directly visible in the top navbar      */}
+        {/* ======================================================== */}
+        <div className="flex md:hidden items-center gap-1.5 sm:gap-2 shrink-0">
+          {/* 1. Day / Night Toggle Button */}
+          <button
+            type="button"
+            id="mobile-theme-btn"
             onClick={toggleTheme}
-            className="sm:hidden min-w-[44px] min-h-[44px] w-11 h-11 rounded-full border border-[var(--border-subtle)] bg-[var(--surface-card)] text-[var(--text-primary)] flex items-center justify-center hover:border-[var(--accent-primary)] transition shadow-2xs active:scale-95"
+            className="w-10 h-10 sm:w-11 sm:h-11 min-w-[40px] sm:min-w-[44px] min-h-[40px] sm:min-h-[44px] rounded-full border border-[var(--border-subtle)] bg-[var(--surface-card)] text-[var(--text-primary)] flex items-center justify-center hover:border-[var(--accent-primary)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] transition shadow-2xs active:scale-95 shrink-0 cursor-pointer"
             title={isLight ? "Switch to Night Mode" : "Switch to Day Mode"}
             aria-label="Toggle Day and Night theme"
           >
@@ -254,11 +296,25 @@ export default function Navbar() {
             )}
           </button>
 
-          {/* Hamburger / Menu Toggle Button (Min 44px Touch Target) */}
+          {/* 2. Search Button (ALWAYS VISIBLE DIRECTLY IN NAVBAR) */}
           <button
             type="button"
+            id="mobile-search-btn"
+            onClick={() => setIsSearchOpen(true)}
+            className="h-10 sm:h-11 min-w-[40px] sm:min-w-[44px] min-h-[40px] sm:min-h-[44px] px-2.5 sm:px-3 rounded-full border border-[var(--border-subtle)] bg-[var(--surface-card)] text-[var(--text-primary)] flex items-center justify-center gap-1.5 hover:border-[var(--accent-primary)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] transition shadow-2xs active:scale-95 shrink-0 cursor-pointer"
+            title="Search city (⌘K)"
+            aria-label="Search city"
+          >
+            <Search size={17} className={isLight ? "text-[#7A4F35]" : "text-[#8E8AFF]"} />
+            <span className="hidden sm:inline text-xs font-medium">Search</span>
+          </button>
+
+          {/* 3. Hamburger Menu Button */}
+          <button
+            type="button"
+            id="mobile-menu-btn"
             onClick={() => setMobileMenuOpen((prev) => !prev)}
-            className="min-w-[44px] min-h-[44px] w-11 h-11 rounded-2xl text-[var(--text-primary)] hover:bg-black/5 dark:hover:bg-white/10 flex items-center justify-center transition border border-[var(--border-subtle)] bg-[var(--surface-card)] active:scale-95 shadow-2xs"
+            className="w-10 h-10 sm:w-11 sm:h-11 min-w-[40px] sm:min-w-[44px] min-h-[40px] sm:min-h-[44px] rounded-2xl text-[var(--text-primary)] hover:bg-black/5 dark:hover:bg-white/10 flex items-center justify-center transition border border-[var(--border-subtle)] bg-[var(--surface-card)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] active:scale-95 shadow-2xs shrink-0 cursor-pointer"
             aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
             aria-expanded={mobileMenuOpen}
             aria-controls="mobile-navigation-drawer"
